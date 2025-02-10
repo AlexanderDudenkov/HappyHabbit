@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
 
+    //Navigation
+    implementation(libs.hilt.navigation.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
