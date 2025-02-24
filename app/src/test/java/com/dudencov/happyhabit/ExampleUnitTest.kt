@@ -1,4 +1,4 @@
-package com.dudencov.happyhabbit
+package com.dudencov.happyhabit
 
 import org.junit.Test
 

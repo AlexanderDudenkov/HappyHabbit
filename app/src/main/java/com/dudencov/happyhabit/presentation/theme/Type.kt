@@ -1,4 +1,4 @@
-package com.dudencov.happyhabbit.ui.theme
+package com.dudencov.happyhabit.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

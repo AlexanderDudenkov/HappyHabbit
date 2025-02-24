@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">HappyHabbit</string>
+    <string name="app_name" translatable="false">HappyHabit</string>
+    <string name="weekly_progress.content_desc">Weekly progress</string>
+    <string name="fab.add.content_desc">Tap to open create habit dialog</string>
+    <string name="context_menu.content_desc">Tap to open context menu</string>
+    <string name="context_menu_edit.title">Edit</string>
+    <string name="context_menu_delete.title">Delete</string>
+
+    <string name="habit_dialog.create_habit.title">Create habit</string>
+    <string name="habit_dialog.edit_habit.title">Edit habit</string>
+    <string name="habit_dialog.text_field.placeholder">Type text</string>
+    <string name="habit_dialog.save_btn.title">Save</string>
+    <string name="habit_dialog.cancel_btn.title">Cancel</string>
+
 </resources>

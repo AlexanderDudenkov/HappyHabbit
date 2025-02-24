@@ -3,20 +3,21 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt") version libs.versions.kotlin
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.dudencov.happyhabbit"
+    namespace = "com.dudencov.happyhabit"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.dudencov.happyhabbit"
+        applicationId = "com.dudencov.happyhabit"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.dudencov.happyhabit.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -60,13 +61,16 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
 
     //DI
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
 
     //Navigation
+    implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.junit)
@@ -76,6 +80,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.hilt.android.testing)
+    //kaptTest(libs.hilt.android.compiler)
+    kaptAndroidTest(libs.hilt.android.compiler)
 }
 
 kapt {

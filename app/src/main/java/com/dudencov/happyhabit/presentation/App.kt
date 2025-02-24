@@ -1,4 +1,4 @@
-package com.dudencov.happyhabbit.ui
+package com.dudencov.happyhabit.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
