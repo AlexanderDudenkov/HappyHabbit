@@ -1,5 +1,6 @@
 package com.dudencov.happyhabit.presentation.home
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,9 +24,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,131 +53,181 @@ import com.dudencov.happyhabit.presentation.home.HomeTestTags.LIST_ITEM
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.WEEKLY_BTN
 import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {
     val context = LocalContext.current
-    val lazyListState: LazyListState = rememberLazyListState()
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = context.getString(R.string.app_name),
-                        modifier = Modifier.testTag(HomeTestTags.TITLE.tag)
-                    )
-                },
-                actions = {
-                    IconButton(
-                        modifier = Modifier.testTag(WEEKLY_BTN.tag),
-                        onClick = {
-                            onIntent(HomeIntent.OnWeeklyProgressClicked)
-                        }) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = context.getString(R.string.weekly_progress_content_desc)
-                        )
-                    }
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier.testTag(FAB.tag),
-                onClick = {
-                    onIntent(OnFabClicked)
-                }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = context.getString(R.string.fab_add_content_desc)
-                )
-            }
-        }
+        topBar = { TopBar(context, onIntent) },
+        floatingActionButton = { Fab(onIntent, context) }
     ) { paddingValues ->
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 8.dp),
-            state = lazyListState
-        ) {
-            items(
-                state.habits,
-                key = { habit -> habit.id }
-            ) { habit ->
-                var expanded by remember { mutableStateOf(false) }
-
-                Card(
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable { onIntent(OnHabitClicked(habit.id)) }
-                        .testTag(LIST_ITEM.tag),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = habit.name,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(16.dp)
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize(Alignment.TopEnd)
-                        ) {
-                            IconButton(
-                                modifier = Modifier.testTag(LIST_BTN_MENU.tag),
-                                onClick = { expanded = true }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = context.getString(R.string.context_menu_content_desc)
-                                )
-                            }
-
-                            DropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false },
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .testTag(LIST_DROPDOWN_MENU.tag)
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text(context.getString(R.string.context_menu_edit_title)) },
-                                    onClick = {
-                                        onIntent(HomeIntent.OnHabitEditClicked(habit.id))
-                                        expanded = false
-                                    },
-                                    modifier = Modifier.testTag(LIST_DROPDOWN_MENU_EDIT_ITEM.tag),
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(context.getString(R.string.context_menu_delete_title)) },
-                                    onClick = {
-                                        onIntent(HomeIntent.OnHabitDeleteClicked(habit.id))
-                                        expanded = false
-                                    },
-                                    modifier = Modifier.testTag(LIST_DROPDOWN_MENU_DELETE_ITEM.tag),
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+        Box(modifier = Modifier.padding(paddingValues)) {
+            HabitList(state, onIntent)
         }
     }
 }
 
 @Composable
-@Preview(showSystemUi = true, showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
+private fun TopBar(
+    context: Context,
+    onIntent: (HomeIntent) -> Unit
+) {
+    Surface(
+        shadowElevation = 8.dp,
+        tonalElevation = 8.dp,
+        modifier = Modifier.padding(bottom = 8.dp)
+    ) {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+            title = {
+                Text(
+                    text = context.getString(R.string.app_name),
+                    modifier = Modifier.testTag(HomeTestTags.TITLE.tag)
+                )
+            },
+            actions = {
+                IconButton(
+                    modifier = Modifier.testTag(WEEKLY_BTN.tag),
+                    onClick = {
+                        onIntent(HomeIntent.OnWeeklyProgressClicked)
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = context.getString(R.string.weekly_progress_content_desc)
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun Fab(
+    onIntent: (HomeIntent) -> Unit,
+    context: Context
+) {
+    FloatingActionButton(
+        modifier = Modifier.testTag(FAB.tag),
+        onClick = {
+            onIntent(OnFabClicked)
+        }) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = context.getString(R.string.fab_add_content_desc)
+        )
+    }
+}
+
+@Composable
+private fun HabitList(
+    state: HomeState,
+    onIntent: (HomeIntent) -> Unit,
+) {
+    val lazyListState: LazyListState = rememberLazyListState()
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        state = lazyListState
+    ) {
+        items(
+            state.habits,
+            key = { habit -> habit.id }
+        ) { habit ->
+            HabitItem(state, onIntent, habit)
+        }
+    }
+}
+
+@Composable
+private fun HabitItem(
+    state: HomeState,
+    onIntent: (HomeIntent) -> Unit,
+    habit: Habit,
+) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onIntent(OnHabitClicked(habit.id)) }
+            .testTag(LIST_ITEM.tag),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = habit.name,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            )
+
+            HabitItemMenu(state, onIntent, habit)
+        }
+    }
+}
+
+@Composable
+private fun HabitItemMenu(
+    state: HomeState,
+    onIntent: (HomeIntent) -> Unit,
+    habit: Habit,
+) {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .wrapContentSize(Alignment.TopEnd)
+    ) {
+        IconButton(
+            modifier = Modifier.testTag(LIST_BTN_MENU.tag),
+            onClick = { expanded = true }) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = context.getString(R.string.context_menu_content_desc)
+            )
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .testTag(LIST_DROPDOWN_MENU.tag)
+        ) {
+            DropdownMenuItem(
+                text = { Text(context.getString(R.string.context_menu_edit_title)) },
+                onClick = {
+                    onIntent(HomeIntent.OnHabitEditClicked(habit.id))
+                    expanded = false
+                },
+                modifier = Modifier.testTag(LIST_DROPDOWN_MENU_EDIT_ITEM.tag),
+            )
+            DropdownMenuItem(
+                text = { Text(context.getString(R.string.context_menu_delete_title)) },
+                onClick = {
+                    onIntent(HomeIntent.OnHabitDeleteClicked(habit.id))
+                    expanded = false
+                },
+                modifier = Modifier.testTag(LIST_DROPDOWN_MENU_DELETE_ITEM.tag),
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
 fun HomeScreenPreview1() {
     HappyHabitTheme {
         HomeScreen(
@@ -184,7 +238,7 @@ fun HomeScreenPreview1() {
 }
 
 @Composable
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(showBackground = true)
 fun HomeScreenPreview2() {
     HappyHabitTheme {
         HomeScreen(

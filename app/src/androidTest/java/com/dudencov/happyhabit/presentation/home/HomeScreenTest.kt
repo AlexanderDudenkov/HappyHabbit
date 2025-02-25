@@ -147,6 +147,7 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+            waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
@@ -167,7 +168,7 @@ internal class HomeScreenTest : BaseTest() {
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
 
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-
+            waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
         }
     }
@@ -182,6 +183,7 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+            waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
