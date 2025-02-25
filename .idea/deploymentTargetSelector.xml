@@ -8,15 +8,6 @@
       <SelectionState runConfigName="HomeScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testHabitDialogClosesOnKeyboardDone()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testKeyboardClosesOnDoneButtonTap()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testNavigateToDetailsAndBack()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="testNavigateToWeeklyAndBack()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
