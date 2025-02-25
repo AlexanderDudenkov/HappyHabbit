@@ -3,6 +3,7 @@ package com.dudencov.happyhabit.presentation.home
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,6 +65,7 @@ fun HomeScreen(
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             HabitList(state, onIntent)
+            EmptyState(state)
         }
     }
 }
@@ -223,6 +225,20 @@ private fun HabitItemMenu(
                 modifier = Modifier.testTag(LIST_DROPDOWN_MENU_DELETE_ITEM.tag),
             )
         }
+    }
+}
+
+@Composable
+private fun BoxScope.EmptyState(state: HomeState) {
+    val context = LocalContext.current
+
+    if (state.emptyStateVisible) {
+        Text(
+            text = context.getString(R.string.home_empty_state_title),
+            modifier = Modifier.Companion
+                .align(alignment = Alignment.Center)
+                .testTag(HomeTestTags.EMPTY_STATE.tag)
+        )
     }
 }
 

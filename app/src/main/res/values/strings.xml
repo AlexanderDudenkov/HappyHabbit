@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">HappyHabit</string>
+    <string name="home.empty_state.title">Add your first happy habit!</string>
     <string name="weekly_progress.content_desc">Weekly progress</string>
     <string name="fab.add.content_desc">Tap to open create habit dialog</string>
     <string name="context_menu.content_desc">Tap to open context menu</string>
