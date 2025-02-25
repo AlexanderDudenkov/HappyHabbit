@@ -2,6 +2,7 @@ package com.dudencov.happyhabit.presentation.home
 
 enum class HomeTestTags(val tag: String) {
     TITLE("HomeTitle"),
+    EMPTY_STATE("emptyState"),
     FAB("HomeFab"),
     WEEKLY_BTN("HomeWeeklyProgress"),
     LIST_ITEM("HomeListItem"),

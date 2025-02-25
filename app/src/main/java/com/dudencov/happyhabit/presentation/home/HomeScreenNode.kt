@@ -1,11 +1,14 @@
 package com.dudencov.happyhabit.presentation.home
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.dudencov.happyhabit.presentation.navigation.Routes
 
@@ -14,7 +17,7 @@ fun HomeScreenNode(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val homeState by viewModel.state.collectAsState()
 
-    HandleArgs(navController, viewModel)
+    HandleLifecycle(viewModel)
     HandleSideEffects(viewModel, navController)
 
     HomeScreen(
@@ -24,23 +27,18 @@ fun HomeScreenNode(navController: NavHostController) {
 }
 
 @Composable
-private fun HandleArgs(
-    navController: NavHostController,
-    viewModel: HomeViewModel
-) {
-    val navBackStackEntry = navController.currentBackStackEntry
-    val savedStateHandle = navBackStackEntry?.savedStateHandle
-    val savedHabitIdState: State<String?> = savedStateHandle?.getStateFlow<String?>(
-        key = Routes.Home.HABIT_ID_RECEIVE_RESULT,
-        initialValue = null
-    )?.collectAsState() ?: return
+private fun HandleLifecycle(viewModel: HomeViewModel) {
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    if (savedHabitIdState.value != null) {
-        LaunchedEffect(savedHabitIdState) {
-            savedHabitIdState.value?.let {
-                viewModel.onIntent(HomeIntent.OnHabitSaved(it))
-                savedStateHandle.remove<String>(Routes.Home.HABIT_ID_RECEIVE_RESULT)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onIntent(HomeIntent.OnResume)
             }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 }

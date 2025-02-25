@@ -8,7 +8,10 @@
       <SelectionState runConfigName="HomeScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testNavigateToWeeklyAndBack()">
+      <SelectionState runConfigName="testEditHabit3()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testEditHabit4()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

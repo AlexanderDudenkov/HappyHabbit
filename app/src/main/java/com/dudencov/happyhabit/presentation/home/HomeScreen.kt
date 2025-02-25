@@ -31,10 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +38,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
+import com.dudencov.happyhabit.presentation.entities.HabitItemUi
+import com.dudencov.happyhabit.presentation.entities.HabitUi
 import com.dudencov.happyhabit.presentation.home.HomeIntent.OnFabClicked
 import com.dudencov.happyhabit.presentation.home.HomeIntent.OnHabitClicked
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.FAB
@@ -139,26 +137,25 @@ private fun HabitList(
         state = lazyListState
     ) {
         items(
-            state.habits,
-            key = { habit -> habit.id }
-        ) { habit ->
-            HabitItem(state, onIntent, habit)
+            state.habitItems,
+            key = { item -> item.habit.id }
+        ) { item ->
+            HabitItem(onIntent, item)
         }
     }
 }
 
 @Composable
 private fun HabitItem(
-    state: HomeState,
     onIntent: (HomeIntent) -> Unit,
-    habit: Habit,
+    item: HabitItemUi,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onIntent(OnHabitClicked(habit.id)) }
+            .clickable { onIntent(OnHabitClicked(item.habit.id)) }
             .testTag(LIST_ITEM.tag),
     ) {
         Row(
@@ -166,25 +163,23 @@ private fun HabitItem(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = habit.name,
+                text = item.habit.name,
                 modifier = Modifier
                     .weight(1f)
                     .padding(16.dp)
             )
 
-            HabitItemMenu(state, onIntent, habit)
+            HabitItemMenu(onIntent, item)
         }
     }
 }
 
 @Composable
 private fun HabitItemMenu(
-    state: HomeState,
     onIntent: (HomeIntent) -> Unit,
-    habit: Habit,
+    item: HabitItemUi,
 ) {
     val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -192,7 +187,14 @@ private fun HabitItemMenu(
     ) {
         IconButton(
             modifier = Modifier.testTag(LIST_BTN_MENU.tag),
-            onClick = { expanded = true }) {
+            onClick = {
+                onIntent(
+                    HomeIntent.OnHabitItemMenuClicked(
+                        habitId = item.habit.id,
+                        isExpended = item.menuExpended
+                    )
+                )
+            }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = context.getString(R.string.context_menu_content_desc)
@@ -200,8 +202,8 @@ private fun HabitItemMenu(
         }
 
         DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
+            expanded = item.menuExpended,
+            onDismissRequest = { onIntent(HomeIntent.OnHabitItemMenuDismissed(item.habit.id)) },
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .testTag(LIST_DROPDOWN_MENU.tag)
@@ -209,16 +211,14 @@ private fun HabitItemMenu(
             DropdownMenuItem(
                 text = { Text(context.getString(R.string.context_menu_edit_title)) },
                 onClick = {
-                    onIntent(HomeIntent.OnHabitEditClicked(habit.id))
-                    expanded = false
+                    onIntent(HomeIntent.OnHabitEditClicked(item.habit.id))
                 },
                 modifier = Modifier.testTag(LIST_DROPDOWN_MENU_EDIT_ITEM.tag),
             )
             DropdownMenuItem(
                 text = { Text(context.getString(R.string.context_menu_delete_title)) },
                 onClick = {
-                    onIntent(HomeIntent.OnHabitDeleteClicked(habit.id))
-                    expanded = false
+                    onIntent(HomeIntent.OnHabitDeleteClicked(item.habit.id))
                 },
                 modifier = Modifier.testTag(LIST_DROPDOWN_MENU_DELETE_ITEM.tag),
             )
@@ -242,12 +242,29 @@ fun HomeScreenPreview1() {
 fun HomeScreenPreview2() {
     HappyHabitTheme {
         HomeScreen(
-            state = HomeState(habits = previewStub),
+            state = HomeState(habitItems = previewStub),
             onIntent = {},
         )
     }
 }
 
+@Composable
+@Preview(showBackground = true)
+fun HomeScreenPreview3() {
+    HappyHabitTheme {
+        HomeScreen(
+            state = HomeState(
+                habitItems = listOf(
+                    HabitItemUi(
+                        menuExpended = true,
+                        habit = HabitUi(id = "0", name = "habit")
+                    )
+                )
+            ),
+            onIntent = {},
+        )
+    }
+}
 
 
 

@@ -3,6 +3,8 @@ package com.dudencov.happyhabit.presentation.habitdialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.data.RepositoryImpl
+import com.dudencov.happyhabit.presentation.entities.toHabit
+import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,12 +37,13 @@ class HabitDialogViewModel @Inject constructor() : ViewModel() {
 
             is HabitDialogIntent.OnSetHabitToTextField -> {
                 viewModelScope.launch {
-                    val habit = RepositoryImpl.getHabit(intent.habitId) ?: return@launch
+                    val habit =
+                        RepositoryImpl.getHabit(intent.habitId)?.toHabitUi() ?: return@launch
                     initialHabitName = habit.name
 
                     _state.update {
                         it.copy(
-                            habit = habit,
+                            habitUi = habit,
                             saveEnabled = false
                         )
                     }
@@ -50,7 +53,7 @@ class HabitDialogViewModel @Inject constructor() : ViewModel() {
             is HabitDialogIntent.OnTextChanged -> {
                 _state.update {
                     it.copy(
-                        habit = it.habit.copy(name = intent.text),
+                        habitUi = it.habitUi.copy(name = intent.text),
                         saveEnabled = intent.text.isNotEmpty() && intent.text != initialHabitName,
                     )
                 }
@@ -58,8 +61,8 @@ class HabitDialogViewModel @Inject constructor() : ViewModel() {
 
             is HabitDialogIntent.OnSave -> {
                 viewModelScope.launch {
-                    val saved = RepositoryImpl.saveHabit(state.value.habit)
-                    _sideEffect.emit(HabitDialogSideEffect.SaveAndDismiss(saved.id))
+                    RepositoryImpl.saveHabit(state.value.habitUi.toHabit())
+                    _sideEffect.emit(HabitDialogSideEffect.OnDismiss)
                 }
             }
 

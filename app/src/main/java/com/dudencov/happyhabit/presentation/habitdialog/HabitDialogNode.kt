@@ -47,14 +47,6 @@ private fun HandleSideEffects(
                 HabitDialogSideEffect.OnDismiss -> {
                     navController.popBackStack()
                 }
-
-                is HabitDialogSideEffect.SaveAndDismiss -> {
-                    navController.previousBackStackEntry?.savedStateHandle?.set(
-                        key = Routes.HabitDialog.HABIT_ID_SEND_RESULT,
-                        value = effect.habitId
-                    )
-                    navController.popBackStack()
-                }
             }
         }
     }

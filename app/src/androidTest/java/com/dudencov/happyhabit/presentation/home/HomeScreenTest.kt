@@ -1,11 +1,14 @@
 package com.dudencov.happyhabit.presentation.home
 
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
@@ -22,6 +25,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@OptIn(ExperimentalTestApi::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 internal class HomeScreenTest : BaseTest() {
@@ -59,6 +63,7 @@ internal class HomeScreenTest : BaseTest() {
     }
 
     //User taps Save during editing habit name
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun testEditHabit1() {
         with(composeTestRule) {
@@ -71,9 +76,10 @@ internal class HomeScreenTest : BaseTest() {
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsEnabled().performClick()
+            waitUntilAtLeastOneExists(hasText("1"), 5000)
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
-            composeTestRule.waitForIdle()
+            waitUntilAtLeastOneExists(hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag),5000)
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
                 this,
@@ -113,6 +119,7 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+            waitUntilAtLeastOneExists(hasText("1"), 10000)
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
@@ -147,7 +154,7 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
-            waitForIdle()
+            waitUntilAtLeastOneExists(hasText("1"), 10000)
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
@@ -170,6 +177,64 @@ internal class HomeScreenTest : BaseTest() {
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
             waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
+        }
+    }
+
+    //User edits the same habit twice
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun testEditHabit4() {
+        with(composeTestRule) {
+            //creating
+            onNodeWithTag(HomeTestTags.FAB.tag).performClick()
+            onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
+                this,
+                R.string.habit_dialog_create_habit_title
+            )
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
+            onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsEnabled().performClick()
+            waitUntilAtLeastOneExists(hasText("1"), 10000)
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
+
+            //editing #1
+            onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
+            composeTestRule.waitUntilAtLeastOneExists(hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag), 5000)
+            onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
+            onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
+                this,
+                R.string.context_menu_delete_title
+            )
+            onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
+                this,
+                R.string.context_menu_edit_title
+            ).performClick()
+            onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
+                this,
+                R.string.habit_dialog_edit_habit_title
+            )
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
+            onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("1").performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsEnabled()
+            onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextReplacement("1")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
+            onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+
+            //editing #2
+            onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
+            composeTestRule.waitForIdle()
+            onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).performClick()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11").performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("111")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+            waitUntilAtLeastOneExists(hasText("111"), 5000)
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("111")
         }
     }
 

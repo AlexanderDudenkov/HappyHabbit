@@ -34,7 +34,7 @@ fun HabitDialog(
             val localFocusManager = LocalFocusManager.current
 
             TextField(
-                value = state.habit.name,
+                value = state.habitUi.name,
                 onValueChange = { onIntent(HabitDialogIntent.OnTextChanged(it)) },
                 placeholder = { Text(text = context.getString(R.string.habit_dialog_text_field_placeholder)) },
                 keyboardOptions = KeyboardOptions.Default.copy(

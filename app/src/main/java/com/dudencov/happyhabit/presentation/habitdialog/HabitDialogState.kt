@@ -2,12 +2,12 @@ package com.dudencov.happyhabit.presentation.habitdialog
 
 import android.os.Parcelable
 import com.dudencov.happyhabit.R
-import com.dudencov.happyhabit.presentation.home.Habit
+import com.dudencov.happyhabit.presentation.entities.HabitUi
 import kotlinx.parcelize.Parcelize
 
 data class HabitDialogState(
     val title: HabitDialogTitle = HabitDialogTitle.CREATE,
-    val habit: Habit = Habit(),
+    val habitUi: HabitUi = HabitUi(),
     val saveEnabled: Boolean = false,
 )
 

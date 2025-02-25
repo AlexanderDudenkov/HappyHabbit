@@ -1,14 +1,17 @@
 package com.dudencov.happyhabit.presentation.home
 
-import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.data.RepositoryImpl
+import com.dudencov.happyhabit.presentation.entities.HabitItemUi
+import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,14 +20,27 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
-    val state: StateFlow<HomeState> = _state
+    val state: StateFlow<HomeState> = _state.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<HomeSideEffect>()
-    val sideEffect: SharedFlow<HomeSideEffect> = _sideEffect
+    val sideEffect: SharedFlow<HomeSideEffect> = _sideEffect.asSharedFlow()
 
     fun onIntent(intent: HomeIntent) {
         viewModelScope.launch {
             when (intent) {
+                HomeIntent.OnResume -> {
+                    val habitItems = RepositoryImpl.getAllHabits().map {
+                        HabitItemUi(habit = it.toHabitUi())
+                    }
+
+                    _state.update {
+                        it.copy(
+                            emptyStateVisible = habitItems.isEmpty(),
+                            habitItems = habitItems,
+                        )
+                    }
+                }
+
                 is HomeIntent.OnHabitClicked -> {
                     _sideEffect.emit(HomeSideEffect.RouteToDetails(intent.habitId))
                 }
@@ -35,12 +51,25 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
                 is HomeIntent.OnHabitDeleteClicked -> {
                     RepositoryImpl.deleteHabit(intent.id)
-                    _state.update { state ->
-                        state.copy(habits = state.habits.deleteHabit(intent.id))
+                    val habitItems = RepositoryImpl.getAllHabits().map {
+                        HabitItemUi(habit = it.toHabitUi())
+                    }
+
+                    _state.update {
+                        it.copy(
+                            emptyStateVisible = it.habitItems.size == 1,
+                            habitItems = habitItems,
+                        )
                     }
                 }
 
                 is HomeIntent.OnHabitEditClicked -> {
+                    _state.update { state ->
+                        state.updateItemMenuExpandState(
+                            habitId = intent.currentHabitId,
+                            isExpanded = false
+                        )
+                    }
                     _sideEffect.emit(
                         HomeSideEffect.RouteToDialog(habitId = intent.currentHabitId)
                     )
@@ -50,40 +79,22 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     _sideEffect.emit(HomeSideEffect.RouteToWeeklyProgress)
                 }
 
-                is HomeIntent.OnHabitSaved -> {
-                    val habit = RepositoryImpl.getHabit(intent.newHabitId) ?: return@launch
+                is HomeIntent.OnHabitItemMenuClicked -> {
+                    _state.update { state ->
+                        state.updateItemMenuExpandState(
+                            habitId = intent.habitId,
+                            isExpanded = intent.isExpended.not()
+                        )
+                    }
+                }
+
+                is HomeIntent.OnHabitItemMenuDismissed -> {
                     _state.update {
-                        it.copy(habits = it.createOrUpdateHabit(habit))
+                        it.updateItemMenuExpandState(intent.habitId, false)
                     }
                 }
             }
         }
-    }
-
-    private fun HomeState.createOrUpdateHabit(new: Habit): List<Habit> {
-        return if (habits.isHabitExist(new)) {
-            habits.updateHabit(newHabit = new)
-        } else {
-            habits.createHabit(newHabit = new)
-        }
-    }
-
-    private fun List<Habit>.isHabitExist(habit: Habit): Boolean {
-        return fastAny { it.id == habit.id }
-    }
-
-    private fun List<Habit>.createHabit(newHabit: Habit): List<Habit> {
-        return this + listOf(newHabit)
-    }
-
-    private fun List<Habit>.updateHabit(newHabit: Habit): List<Habit> {
-        return this.map {
-            if (it.id == newHabit.id) newHabit else it
-        }
-    }
-
-    private fun List<Habit>.deleteHabit(habitId: String): List<Habit> {
-        return this.filterNot { it.id == habitId }
     }
 
 }
