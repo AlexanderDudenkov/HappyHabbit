@@ -12,5 +12,6 @@
     <string name="habit_dialog.text_field.placeholder">Type text</string>
     <string name="habit_dialog.save_btn.title">Save</string>
     <string name="habit_dialog.cancel_btn.title">Cancel</string>
+    <string name="button_back.content_desk">Back</string>
 
 </resources>

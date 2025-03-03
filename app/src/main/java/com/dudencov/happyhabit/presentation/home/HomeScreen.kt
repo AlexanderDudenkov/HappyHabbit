@@ -1,6 +1,5 @@
 package com.dudencov.happyhabit.presentation.home
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -36,7 +35,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.presentation.entities.HabitItemUi
@@ -57,11 +58,9 @@ fun HomeScreen(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Scaffold(
-        topBar = { TopBar(context, onIntent) },
-        floatingActionButton = { Fab(onIntent, context) }
+        topBar = { TopBar(onIntent) },
+        floatingActionButton = { Fab(onIntent) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             HabitList(state, onIntent)
@@ -73,7 +72,6 @@ fun HomeScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun TopBar(
-    context: Context,
     onIntent: (HomeIntent) -> Unit
 ) {
     Surface(
@@ -88,7 +86,7 @@ private fun TopBar(
             scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             title = {
                 Text(
-                    text = context.getString(R.string.app_name),
+                    text = stringResource(R.string.app_name),
                     modifier = Modifier.testTag(HomeTestTags.TITLE.tag)
                 )
             },
@@ -100,7 +98,7 @@ private fun TopBar(
                     }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = context.getString(R.string.weekly_progress_content_desc)
+                        contentDescription = stringResource(R.string.weekly_progress_content_desc)
                     )
                 }
             }
@@ -111,7 +109,6 @@ private fun TopBar(
 @Composable
 private fun Fab(
     onIntent: (HomeIntent) -> Unit,
-    context: Context
 ) {
     FloatingActionButton(
         modifier = Modifier.testTag(FAB.tag),
@@ -120,7 +117,7 @@ private fun Fab(
         }) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = context.getString(R.string.fab_add_content_desc)
+            contentDescription = stringResource(R.string.fab_add_content_desc)
         )
     }
 }
@@ -243,7 +240,8 @@ private fun BoxScope.EmptyState(state: HomeState) {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewScreenSizes
+@Preview(showSystemUi = false, showBackground = true)
 fun HomeScreenPreview1() {
     HappyHabitTheme {
         HomeScreen(
@@ -254,18 +252,23 @@ fun HomeScreenPreview1() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewScreenSizes
+@Preview(showSystemUi = false, showBackground = true)
 fun HomeScreenPreview2() {
     HappyHabitTheme {
         HomeScreen(
-            state = HomeState(habitItems = previewStub),
+            state = HomeState(
+                habitItems = previewStub,
+                emptyStateVisible = false
+            ),
             onIntent = {},
         )
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewScreenSizes
+@Preview(showSystemUi = false, showBackground = true)
 fun HomeScreenPreview3() {
     HappyHabitTheme {
         HomeScreen(
@@ -275,7 +278,8 @@ fun HomeScreenPreview3() {
                         menuExpended = true,
                         habit = HabitUi(id = "0", name = "habit")
                     )
-                )
+                ),
+                emptyStateVisible = false
             ),
             onIntent = {},
         )

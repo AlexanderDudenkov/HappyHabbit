@@ -2,7 +2,7 @@ package com.dudencov.happyhabit.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.data.RepositoryImpl
+import com.dudencov.happyhabit.domain.data.Repository
 import com.dudencov.happyhabit.presentation.entities.HabitItemUi
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
@@ -29,7 +31,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             when (intent) {
                 HomeIntent.OnResume -> {
-                    val habitItems = RepositoryImpl.getAllHabits().map {
+                    val habitItems = repository.getAllHabits().map {
                         HabitItemUi(habit = it.toHabitUi())
                     }
 
@@ -50,8 +52,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 }
 
                 is HomeIntent.OnHabitDeleteClicked -> {
-                    RepositoryImpl.deleteHabit(intent.id)
-                    val habitItems = RepositoryImpl.getAllHabits().map {
+                    repository.deleteHabit(intent.id)
+                    val habitItems = repository.getAllHabits().map {
                         HabitItemUi(habit = it.toHabitUi())
                     }
 

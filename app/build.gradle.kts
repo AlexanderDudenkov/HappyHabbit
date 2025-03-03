@@ -37,7 +37,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"//downgrade from 21 to 17 for backward compatibility with KAPT
+        jvmTarget = "17" //downgrade from 21 to 17 for backward compatibility with KAPT
     }
     buildFeatures {
         compose = true
@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -81,7 +80,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.hilt.android.testing)
-    //kaptTest(libs.hilt.android.compiler)
     kaptAndroidTest(libs.hilt.android.compiler)
 }
 

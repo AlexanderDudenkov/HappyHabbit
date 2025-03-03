@@ -2,7 +2,7 @@ package com.dudencov.happyhabit.presentation.habitdialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.data.RepositoryImpl
+import com.dudencov.happyhabit.domain.data.Repository
 import com.dudencov.happyhabit.presentation.entities.toHabit
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HabitDialogViewModel @Inject constructor() : ViewModel() {
+class HabitDialogViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(HabitDialogState())
     val state: StateFlow<HabitDialogState> = _state.asStateFlow()
@@ -38,7 +40,7 @@ class HabitDialogViewModel @Inject constructor() : ViewModel() {
             is HabitDialogIntent.OnSetHabitToTextField -> {
                 viewModelScope.launch {
                     val habit =
-                        RepositoryImpl.getHabit(intent.habitId)?.toHabitUi() ?: return@launch
+                        repository.getHabit(intent.habitId)?.toHabitUi() ?: return@launch
                     initialHabitName = habit.name
 
                     _state.update {
@@ -61,7 +63,7 @@ class HabitDialogViewModel @Inject constructor() : ViewModel() {
 
             is HabitDialogIntent.OnSave -> {
                 viewModelScope.launch {
-                    RepositoryImpl.saveHabit(state.value.habitUi.toHabit())
+                    repository.saveHabit(state.value.habitUi.toHabit())
                     _sideEffect.emit(HabitDialogSideEffect.OnDismiss)
                 }
             }

@@ -1,7 +1,10 @@
 package com.dudencov.happyhabit.presentation.detail
 
+import java.time.LocalDate
+
 sealed interface DetailIntent {
-    data class SetItemId(val id: String) : DetailIntent
-    data class UpdateText(val newText: String) : DetailIntent
-    data object OnClicked : DetailIntent
+    data class SetHabitId(val id: String) : DetailIntent
+    data class OnScreenSwiped(val direction: SwipeDirection) : DetailIntent
+    data class OnDateSelected(val date: LocalDate) : DetailIntent
+    data object OnNavigateBack : DetailIntent
 }

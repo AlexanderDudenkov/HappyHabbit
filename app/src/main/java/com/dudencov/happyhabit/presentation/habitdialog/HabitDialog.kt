@@ -8,9 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.dudencov.happyhabit.R
@@ -20,13 +20,11 @@ fun HabitDialog(
     state: HabitDialogState,
     onIntent: (HabitDialogIntent) -> Unit,
 ) {
-    val context = LocalContext.current
-
     AlertDialog(
         onDismissRequest = { onIntent(HabitDialogIntent.OnCancel) },
         title = {
             Text(
-                text = context.getString(state.title.stringResId),
+                text = stringResource(state.title.stringResId),
                 Modifier.testTag(DialogTestTags.TITLE.tag),
             )
         },
@@ -36,7 +34,7 @@ fun HabitDialog(
             TextField(
                 value = state.habitUi.name,
                 onValueChange = { onIntent(HabitDialogIntent.OnTextChanged(it)) },
-                placeholder = { Text(text = context.getString(R.string.habit_dialog_text_field_placeholder)) },
+                placeholder = { Text(text = stringResource(R.string.habit_dialog_text_field_placeholder)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Text
@@ -55,14 +53,14 @@ fun HabitDialog(
                 onClick = { onIntent(HabitDialogIntent.OnSave) },
                 enabled = state.saveEnabled
             ) {
-                Text(context.getString(R.string.habit_dialog_save_btn_title))
+                Text(stringResource(R.string.habit_dialog_save_btn_title))
             }
         },
         dismissButton = {
             Button(
                 modifier = Modifier.testTag(DialogTestTags.BTN_CANCEL.tag),
                 onClick = { onIntent(HabitDialogIntent.OnCancel) }) {
-                Text(context.getString(R.string.habit_dialog_cancel_btn_title))
+                Text(stringResource(R.string.habit_dialog_cancel_btn_title))
             }
         }
     )
