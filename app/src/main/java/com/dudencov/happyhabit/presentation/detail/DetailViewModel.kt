@@ -32,7 +32,7 @@ class DetailViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             habitId = intent.id,
-                            selectedDates = repository.getDates(intent.id)
+                            selectedDates = repository.getDates(habitId = intent.id)
                         )
                     }
                 }

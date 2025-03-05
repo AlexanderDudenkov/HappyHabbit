@@ -1,12 +1,13 @@
 package com.dudencov.happyhabit.presentation.home
 
-import com.dudencov.happyhabit.presentation.entities.HabitItemUi
+import androidx.compose.runtime.Stable
 import com.dudencov.happyhabit.presentation.entities.HabitUi
 
 val previewStub = List(11) { HabitItemUi(HabitUi("$it", "habit $it")) }
 
 data class HomeState(
-    val emptyStateVisible: Boolean = true,
+    val isEmptyStateVisible: Boolean = true,
+    val isWeeklyEnabled: Boolean = false,
     val habitItems: List<HabitItemUi> = emptyList(),
 ) {
     fun updateItemMenuExpandState(habitId: String, isExpanded: Boolean): HomeState {
@@ -15,3 +16,9 @@ data class HomeState(
         })
     }
 }
+
+@Stable
+data class HabitItemUi(
+    val habit: HabitUi = HabitUi(),
+    val menuExpended: Boolean = false,
+)

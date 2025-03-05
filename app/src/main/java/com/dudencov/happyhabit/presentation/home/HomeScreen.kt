@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import com.dudencov.happyhabit.presentation.entities.HabitItemUi
 import com.dudencov.happyhabit.presentation.entities.HabitUi
 import com.dudencov.happyhabit.presentation.home.HomeIntent.OnFabClicked
 import com.dudencov.happyhabit.presentation.home.HomeIntent.OnHabitClicked
@@ -59,7 +58,7 @@ fun HomeScreen(
     onIntent: (HomeIntent) -> Unit,
 ) {
     Scaffold(
-        topBar = { TopBar(onIntent) },
+        topBar = { TopBar(state, onIntent) },
         floatingActionButton = { Fab(onIntent) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
@@ -72,6 +71,7 @@ fun HomeScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun TopBar(
+    state: HomeState,
     onIntent: (HomeIntent) -> Unit
 ) {
     Surface(
@@ -93,6 +93,7 @@ private fun TopBar(
             actions = {
                 IconButton(
                     modifier = Modifier.testTag(WEEKLY_BTN.tag),
+                    enabled = state.isWeeklyEnabled,
                     onClick = {
                         onIntent(HomeIntent.OnWeeklyProgressClicked)
                     }) {
@@ -131,8 +132,7 @@ private fun HabitList(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp),
+            .fillMaxSize(),
         state = lazyListState
     ) {
         items(
@@ -153,7 +153,7 @@ private fun HabitItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
             .clickable { onIntent(OnHabitClicked(item.habit.id)) }
             .testTag(LIST_ITEM.tag),
     ) {
@@ -165,7 +165,7 @@ private fun HabitItem(
                 text = item.habit.name,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(16.dp)
+                    .padding(horizontal = 8.dp, vertical = 16.dp)
             )
 
             HabitItemMenu(onIntent, item)
@@ -229,7 +229,7 @@ private fun HabitItemMenu(
 private fun BoxScope.EmptyState(state: HomeState) {
     val context = LocalContext.current
 
-    if (state.emptyStateVisible) {
+    if (state.isEmptyStateVisible) {
         Text(
             text = context.getString(R.string.home_empty_state_title),
             modifier = Modifier.Companion
@@ -242,7 +242,7 @@ private fun BoxScope.EmptyState(state: HomeState) {
 @Composable
 @PreviewScreenSizes
 @Preview(showSystemUi = false, showBackground = true)
-fun HomeScreenPreview1() {
+private fun PreviewEmptyState() {
     HappyHabitTheme {
         HomeScreen(
             state = HomeState(),
@@ -254,12 +254,13 @@ fun HomeScreenPreview1() {
 @Composable
 @PreviewScreenSizes
 @Preview(showSystemUi = false, showBackground = true)
-fun HomeScreenPreview2() {
+private fun Preview2() {
     HappyHabitTheme {
         HomeScreen(
             state = HomeState(
+                isWeeklyEnabled = true,
                 habitItems = previewStub,
-                emptyStateVisible = false
+                isEmptyStateVisible = false
             ),
             onIntent = {},
         )
@@ -269,17 +270,18 @@ fun HomeScreenPreview2() {
 @Composable
 @PreviewScreenSizes
 @Preview(showSystemUi = false, showBackground = true)
-fun HomeScreenPreview3() {
+private fun Preview3() {
     HappyHabitTheme {
         HomeScreen(
             state = HomeState(
+                isWeeklyEnabled = true,
                 habitItems = listOf(
                     HabitItemUi(
                         menuExpended = true,
                         habit = HabitUi(id = "0", name = "habit")
                     )
                 ),
-                emptyStateVisible = false
+                isEmptyStateVisible = false
             ),
             onIntent = {},
         )

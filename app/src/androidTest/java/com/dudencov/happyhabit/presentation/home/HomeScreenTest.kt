@@ -33,6 +33,10 @@ internal class HomeScreenTest : BaseTest() {
     @Test
     fun testNavigateToWeeklyAndBack() {
         with(composeTestRule) {
+            onNodeWithTag(HomeTestTags.FAB.tag).performClick()
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
+
             onNodeWithTag(HomeTestTags.WEEKLY_BTN.tag).performClick()
             onNodeWithTag(WeeklyTestTags.TOP_APP_BAR.tag).assertIsDisplayed()
 

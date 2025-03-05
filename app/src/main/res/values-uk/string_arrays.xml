@@ -9,4 +9,14 @@
         <item>Сб</item>
         <item>Нд</item>
     </string-array>
+
+    <string-array name="weekdays_short">
+        <item>П</item>
+        <item>В</item>
+        <item>С</item>
+        <item>Ч</item>
+        <item>П</item>
+        <item>С</item>
+        <item>Н</item>
+    </string-array>
 </resources>

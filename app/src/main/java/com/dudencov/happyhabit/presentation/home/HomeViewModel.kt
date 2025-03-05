@@ -3,7 +3,6 @@ package com.dudencov.happyhabit.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.domain.data.Repository
-import com.dudencov.happyhabit.presentation.entities.HabitItemUi
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,7 +36,8 @@ class HomeViewModel @Inject constructor(
 
                     _state.update {
                         it.copy(
-                            emptyStateVisible = habitItems.isEmpty(),
+                            isWeeklyEnabled = habitItems.isNotEmpty(),
+                            isEmptyStateVisible = habitItems.isEmpty(),
                             habitItems = habitItems,
                         )
                     }
@@ -59,7 +59,8 @@ class HomeViewModel @Inject constructor(
 
                     _state.update {
                         it.copy(
-                            emptyStateVisible = it.habitItems.size == 1,
+                            isWeeklyEnabled = habitItems.isNotEmpty(),
+                            isEmptyStateVisible = habitItems.isEmpty(),
                             habitItems = habitItems,
                         )
                     }

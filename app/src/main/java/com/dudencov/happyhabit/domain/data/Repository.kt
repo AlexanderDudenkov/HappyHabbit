@@ -15,7 +15,10 @@ interface Repository {
 
     suspend fun saveDate(habitId: String, date: LocalDate)
 
-    suspend fun getDates(habitId: String): Set<LocalDate>
+    suspend fun getDates(
+        habitId: String,
+        period: ClosedRange<LocalDate> = LocalDate.MIN..LocalDate.MAX
+    ): Set<LocalDate>
 
     suspend fun deleteDate(habitId: String, date: LocalDate)
 }

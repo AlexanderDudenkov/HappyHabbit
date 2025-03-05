@@ -41,10 +41,12 @@ object RepositoryImpl : Repository {
 
     }
 
-    override suspend fun getDates(habitId: String): Set<LocalDate> {
+    override suspend fun getDates(habitId: String, period: ClosedRange<LocalDate>): Set<LocalDate> {
         val ed: Set<Long> = dates[habitId] ?: emptySet()
 
-        return ed.map { LocalDate.ofEpochDay(it) }.toSet()
+        return ed.map { LocalDate.ofEpochDay(it) }
+            .filter { it in period }
+            .toSet()
     }
 
     override suspend fun deleteDate(habitId: String, date: LocalDate) {
