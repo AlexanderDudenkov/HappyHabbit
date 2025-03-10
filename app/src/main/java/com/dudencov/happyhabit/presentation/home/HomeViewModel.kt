@@ -2,7 +2,7 @@ package com.dudencov.happyhabit.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.domain.data.Repository
+import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: HabitRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())

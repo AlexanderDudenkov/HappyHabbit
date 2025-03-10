@@ -2,7 +2,7 @@ package com.dudencov.happyhabit.presentation.weekly
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.domain.data.Repository
+import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.presentation.utils.getCurrentWeek
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeeklyProgressViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: HabitRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WeeklyProgressState())
@@ -47,16 +47,11 @@ class WeeklyProgressViewModel @Inject constructor(
     private suspend fun createWeeklyHabitsUi(): List<WeeklyHabitUi> {
         val currentWeek = getCurrentWeek()
 
-        return repository.getAllHabits().map { habit ->
-            val selectedDays = repository.getDates(
-                habitId = habit.id,
-                period = currentWeek
-            )
-
+        return repository.getAllHabitsWithDates(currentWeek).map {
             WeeklyHabitUi(
-                id = habit.id,
-                name = habit.name,
-                days = createWeeklyDayUi(selectedDays)
+                id = it.key.id,
+                name = it.key.name,
+                days = createWeeklyDayUi(it.value)
             )
         }
     }

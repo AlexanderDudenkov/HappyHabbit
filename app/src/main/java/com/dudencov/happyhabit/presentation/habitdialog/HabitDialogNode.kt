@@ -28,7 +28,7 @@ private fun HandleArgs(
     viewModel: HabitDialogViewModel
 ) {
     val navBackStackEntry = navController.currentBackStackEntry
-    val habitId = navBackStackEntry?.arguments?.getString(Routes.HabitDialog.HABIT_ID_ARG) ?: return
+    val habitId = navBackStackEntry?.arguments?.getString(Routes.HabitDialog.HABIT_ID_ARG)?.toInt() ?: return
 
     LaunchedEffect(habitId) {
         viewModel.onIntent(HabitDialogIntent.OnChangeTitle(HabitDialogTitle.EDIT))

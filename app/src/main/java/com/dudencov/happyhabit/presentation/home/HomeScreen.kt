@@ -278,7 +278,7 @@ private fun Preview3() {
                 habitItems = listOf(
                     HabitItemUi(
                         menuExpended = true,
-                        habit = HabitUi(id = "0", name = "habit")
+                        habit = HabitUi(id = 0, name = "habit")
                     )
                 ),
                 isEmptyStateVisible = false

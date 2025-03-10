@@ -5,7 +5,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 data class DetailState(
-    val habitId: String = "",
+    val habitId: Int = 0,
     val currentDate: LocalDate = LocalDate.now(),
     val selectedDates: Set<LocalDate> = emptySet(),
     val swipeDirection: SwipeDirection = SwipeDirection.NONE

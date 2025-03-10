@@ -29,7 +29,7 @@ private fun HandleArgs(
 ) {
     val navBackStackEntry = navController.currentBackStackEntry
 
-    val itemId = navBackStackEntry?.arguments?.getString(Routes.Detail.HABIT_ID_ARG) ?: return
+    val itemId = navBackStackEntry?.arguments?.getString(Routes.Detail.HABIT_ID_ARG)?.toInt() ?: return
 
     LaunchedEffect(itemId) {
         detailViewModel.onIntent(DetailIntent.SetHabitId(itemId))

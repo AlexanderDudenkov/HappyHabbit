@@ -1,9 +1,9 @@
 package com.dudencov.happyhabit.presentation.entities
 
-import com.dudencov.happyhabit.data.entities.Habit
+import com.dudencov.happyhabit.domain.entities.Habit
 
 data class HabitUi(
-    val id: String = "",
+    val id: Int = 0,
     val name: String = "",
 )
 

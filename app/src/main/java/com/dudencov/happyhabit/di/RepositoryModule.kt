@@ -1,20 +1,18 @@
 package com.dudencov.happyhabit.di
 
-import com.dudencov.happyhabit.domain.data.Repository
-import com.dudencov.happyhabit.data.RepositoryImpl
+import com.dudencov.happyhabit.data.HabitRepositoryImpl
+import com.dudencov.happyhabit.domain.data.HabitRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+interface RepositoryModule {
 
     @Singleton
-    @Provides
-    fun provideRepository(): Repository {
-        return RepositoryImpl
-    }
+    @Binds
+    fun provideRepository(habitRepository: HabitRepositoryImpl): HabitRepository
 }

@@ -16,7 +16,7 @@ sealed class Routes {
         const val HABIT_ID_ARG: String = "habit_id"
         const val ROUTE_PATTERN = "$DESTINATION?$HABIT_ID_ARG={$HABIT_ID_ARG}"
 
-        fun createRoute(habitId: String) = "$DESTINATION?$HABIT_ID_ARG=$habitId"
+        fun createRoute(habitId: Int) = "$DESTINATION?$HABIT_ID_ARG=$habitId"
     }
 
     data object WeeklyProgress : Routes() {
@@ -29,6 +29,6 @@ sealed class Routes {
         const val HABIT_ID_SEND_RESULT = "saved_habit_id"
         const val ROUTE_PATTERN = "$DESTINATION?$HABIT_ID_ARG={$HABIT_ID_ARG}"
 
-        fun createRoute(habitId: String? = null)= "$DESTINATION?$HABIT_ID_ARG=$habitId"
+        fun createRoute(habitId: Int? = null)= "$DESTINATION?$HABIT_ID_ARG=$habitId"
     }
 }

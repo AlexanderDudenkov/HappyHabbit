@@ -2,7 +2,7 @@ package com.dudencov.happyhabit.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.domain.data.Repository
+import com.dudencov.happyhabit.domain.data.HabitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: HabitRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailState())
@@ -32,7 +32,7 @@ class DetailViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             habitId = intent.id,
-                            selectedDates = repository.getDates(habitId = intent.id)
+                            selectedDates = repository.getHabitDates(habitId = intent.id)
                         )
                     }
                 }
@@ -55,11 +55,11 @@ class DetailViewModel @Inject constructor(
                     if (isAlreadySelected) {
                         repository.deleteDate(state.value.habitId, intent.date)
                     } else {
-                        repository.saveDate(state.value.habitId, intent.date)
+                        repository.createCurrentDate(state.value.habitId, intent.date)
                     }
 
                     _state.update {
-                        it.copy(selectedDates = repository.getDates(state.value.habitId))
+                        it.copy(selectedDates = repository.getHabitDates(state.value.habitId))
                     }
                 }
 

@@ -3,7 +3,7 @@ package com.dudencov.happyhabit.presentation.weekly
 val stub = WeeklyProgressState(
     habits = List(50) { i ->
         WeeklyHabitUi(
-            id = "$i",
+            id = i,
             name = "habit",
             days = List(7) { i2 -> if (i2 % 2 == 0) WeeklyDayUi(true) else WeeklyDayUi() }
         )
@@ -14,7 +14,7 @@ data class WeeklyProgressState(
 )
 
 data class WeeklyHabitUi(
-    val id: String = "",
+    val id: Int = 0,
     val name: String = "",
     val days: List<WeeklyDayUi> = emptyList()
 )
