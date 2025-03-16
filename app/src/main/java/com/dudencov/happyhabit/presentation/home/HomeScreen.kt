@@ -16,20 +16,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,8 +57,7 @@ fun HomeScreen(
     onIntent: (HomeIntent) -> Unit,
 ) {
     Scaffold(
-        topBar = { TopBar(state, onIntent) },
-        floatingActionButton = { Fab(onIntent) }
+        bottomBar = { BottomBar(state, onIntent) },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             HabitList(state, onIntent)
@@ -69,30 +67,21 @@ fun HomeScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun TopBar(
+private fun BottomBar(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit
 ) {
     Surface(
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier.padding(bottom = 4.dp)
     ) {
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-            title = {
-                Text(
-                    text = stringResource(R.string.app_name),
-                    modifier = Modifier.testTag(HomeTestTags.TITLE.tag)
-                )
-            },
+        BottomAppBar(
             actions = {
                 IconButton(
                     modifier = Modifier.testTag(WEEKLY_BTN.tag),
+                    colors = IconButtonDefaults.iconButtonColors()
+                        .copy(contentColor = MaterialTheme.colorScheme.primary),
                     enabled = state.isWeeklyEnabled,
                     onClick = {
                         onIntent(HomeIntent.OnWeeklyProgressClicked)
@@ -102,7 +91,8 @@ private fun TopBar(
                         contentDescription = stringResource(R.string.weekly_progress_content_desc)
                     )
                 }
-            }
+            },
+            floatingActionButton = { Fab(onIntent) }
         )
     }
 }

@@ -89,9 +89,6 @@ private fun TopBar(
     ) {
         TopAppBar(
             modifier = Modifier.testTag(DetailTestTags.TOP_APP_BAR.tag),
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
             scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             title = {
                 Text(text = state.createTitle())

@@ -23,25 +23,34 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeeklyProgressScreen(
     state: WeeklyProgressState,
     onIntent: (WeeklyProgressIntent) -> Unit
 ) {
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
-        topBar = { TopBar(onIntent) }
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { TopBar(scrollBehavior, onIntent) }
     ) { paddingValues ->
         Habits(paddingValues, state)
     }
@@ -50,6 +59,7 @@ fun WeeklyProgressScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
     onIntent: (WeeklyProgressIntent) -> Unit
 ) {
     val context = LocalContext.current
@@ -57,14 +67,11 @@ private fun TopBar(
     Surface(
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier.padding(bottom = 4.dp)
     ) {
         TopAppBar(
             modifier = Modifier.testTag(WeeklyTestTags.TOP_APP_BAR.tag),
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+            scrollBehavior = scrollBehavior,
             title = { Text(text = context.getString(R.string.weekly_appbar_title)) },
             navigationIcon = {
                 IconButton(onClick = { onIntent(WeeklyProgressIntent.OnNavigateBack) }) {
@@ -139,6 +146,7 @@ private fun RowScope.HabitItemDay(
         } else {
             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         },
+        fontWeight = if (day.isSelected) FontWeight.Bold else FontWeight.Normal,
     )
 }
 

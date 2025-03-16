@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     // DI – Hilt
     implementation(libs.dagger.hilt)
