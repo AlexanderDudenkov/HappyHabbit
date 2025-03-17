@@ -27,7 +27,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -71,30 +70,24 @@ private fun BottomBar(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit
 ) {
-    Surface(
-        shadowElevation = 8.dp,
-        tonalElevation = 8.dp,
-        modifier = Modifier.padding(bottom = 4.dp)
-    ) {
-        BottomAppBar(
-            actions = {
-                IconButton(
-                    modifier = Modifier.testTag(WEEKLY_BTN.tag),
-                    colors = IconButtonDefaults.iconButtonColors()
-                        .copy(contentColor = MaterialTheme.colorScheme.primary),
-                    enabled = state.isWeeklyEnabled,
-                    onClick = {
-                        onIntent(HomeIntent.OnWeeklyProgressClicked)
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = stringResource(R.string.weekly_progress_content_desc)
-                    )
-                }
-            },
-            floatingActionButton = { Fab(onIntent) }
-        )
-    }
+    BottomAppBar(
+        actions = {
+            IconButton(
+                modifier = Modifier.testTag(WEEKLY_BTN.tag),
+                colors = IconButtonDefaults.iconButtonColors()
+                    .copy(contentColor = MaterialTheme.colorScheme.primary),
+                enabled = state.isWeeklyEnabled,
+                onClick = {
+                    onIntent(HomeIntent.OnWeeklyProgressClicked)
+                }) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = stringResource(R.string.weekly_progress_content_desc)
+                )
+            }
+        },
+        floatingActionButton = { Fab(onIntent) }
+    )
 }
 
 @Composable

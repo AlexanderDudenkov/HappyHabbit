@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="habit_dialog.cancel_btn.title">Скасувати</string>
     <string name="button_back.content_desk">Назад</string>
+    <string name="home.empty_state.title">Додай свою першу щасливу звичку!</string>
+    <string name="weekly_progress.content_desc">Прогрес за тиждень</string>
+    <string name="fab.add.content_desc">Натисни, щоб відкрити діалог створення звички</string>
+    <string name="context_menu.content_desc">Натисни, щоб відкрити контекстне меню</string>
+    <string name="context_menu_edit.title">Змінити</string>
+    <string name="context_menu_delete.title">Видалити</string>
+    <string name="habit_dialog.create_habit.title">Створити звичку</string>
+    <string name="habit_dialog.edit_habit.title">Змінити звичку</string>
+    <string name="habit_dialog.text_field.placeholder">Введи текст</string>
+    <string name="habit_dialog.save_btn.title">Зберегти</string>
+    <string name="weekly.appbar.title">Прогрес за тиждень</string>
 </resources>
