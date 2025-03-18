@@ -5,7 +5,6 @@ import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
 import com.dudencov.happyhabit.presentation.entities.HabitUi
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
-import com.dudencov.happyhabit.presentation.habitdialog.HabitDialogTitle
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -16,7 +15,6 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
