@@ -4,6 +4,7 @@ coreTesting = "2.2.0"
 kotlin = "1.9.0"
 hilt = "2.51.1"
 kotlinxCoroutinesTest = "1.7.3"
+kotlinxDatetime = "0.6.0"
 navigation = "2.8.7"
 hiltNavigation = "1.2.0"
 coreKtx = "1.15.0"
@@ -28,6 +29,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3Android" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }

@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.LocalDate
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate as KtLocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,7 +56,7 @@ class WeeklyProgressViewModel @Inject constructor(
         }
     }
 
-    private fun createWeeklyDayUi(selectedDays: Set<LocalDate>) =
+    private fun createWeeklyDayUi(selectedDays: Set<KtLocalDate>) =
         DayOfWeek.entries.map { dayOfWeek ->
             WeeklyDayUi(
                 isSelected = selectedDays.any {

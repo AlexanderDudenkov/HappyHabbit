@@ -49,7 +49,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import java.time.LocalDate
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 @Composable
 fun DetailScreen(
@@ -159,14 +160,14 @@ private fun Header() {
 private fun DatesGrid(
     state: DetailState,
     onIntent: (DetailIntent) -> Unit,
-    targetDate: LocalDate,
+    targetDate: KtLocalDate,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
         modifier = Modifier.fillMaxWidth()
     ) {
-        val targetFirstDay = targetDate.withDayOfMonth(1)
-        val targetDaysInMonth = targetDate.lengthOfMonth()
+        val targetFirstDay = KtLocalDate(targetDate.year, targetDate.month, 1)
+        val targetDaysInMonth = targetDate.toJavaLocalDate().lengthOfMonth()
         val targetFirstDayOfWeek = targetFirstDay.dayOfWeek.value
         val offset = targetFirstDayOfWeek - 1
 
@@ -175,7 +176,7 @@ private fun DatesGrid(
         }
 
         items(targetDaysInMonth) { dayIndex ->
-            val date: LocalDate = targetDate.withDayOfMonth(dayIndex + 1)
+            val date = KtLocalDate(targetDate.year, targetDate.month, dayIndex + 1)
             val isActive = state.selectedDates.contains(date)
             val textColor = if (isActive) {
                 MaterialTheme.colorScheme.primary
@@ -221,7 +222,7 @@ private suspend fun PointerInputScope.horizontalDragDetector(
 }
 
 @Composable
-private fun BottomDots(currentDate: LocalDate) {
+private fun BottomDots(currentDate: KtLocalDate) {
     Row(
         modifier = Modifier
             .padding(bottom = 16.dp),

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 @Entity(
     tableName = "SelectedDate",
@@ -18,5 +18,5 @@ import java.time.LocalDate
 data class SelectedDateEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "habitId") val habitId: Int,
-    @ColumnInfo(name = "date") val date: LocalDate
+    @ColumnInfo(name = "date") val date: KtLocalDate
 )

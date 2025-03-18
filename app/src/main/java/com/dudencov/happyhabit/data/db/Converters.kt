@@ -1,29 +1,28 @@
 package com.dudencov.happyhabit.data.db
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 class Converters {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     @TypeConverter
-    fun fromLocalDate(date: LocalDate): String {
-        return date.format(formatter)
+    fun fromLocalDate(date: KtLocalDate): String {
+        return date.toString() // Outputs ISO-8601 format, e.g., "2023-01-01"
     }
 
     @TypeConverter
-    fun toLocalDate(dateString: String): LocalDate {
-        return LocalDate.parse(dateString, formatter)
+    fun toLocalDate(dateString: String): KtLocalDate {
+        return KtLocalDate.parse(dateString) // Parses ISO-8601 format
     }
 
     @TypeConverter
-    fun fromLocalDateSet(dates: Set<LocalDate>): String {
-        return dates.joinToString(",") { it.format(formatter) }
+    fun fromLocalDateSet(dates: Set<KtLocalDate>): String {
+        return dates.joinToString(",") { it.toString() }
     }
 
     @TypeConverter
-    fun toLocalDateSet(datesString: String): Set<LocalDate> {
-        return datesString.split(",").map { LocalDate.parse(it, formatter) }.toSet()
+    fun toLocalDateSet(datesString: String): Set<KtLocalDate> {
+        return if (datesString.isEmpty()) emptySet()
+        else datesString.split(",").map { KtLocalDate.parse(it) }.toSet()
     }
 }

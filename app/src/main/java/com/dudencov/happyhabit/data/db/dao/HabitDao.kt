@@ -8,7 +8,7 @@ import androidx.room.Transaction
 import com.dudencov.happyhabit.data.db.entities.HabitEntity
 import com.dudencov.happyhabit.data.db.entities.HabitWithSelectedDaysDto
 import com.dudencov.happyhabit.data.db.entities.SelectedDateEntity
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 @Dao
 interface HabitDao {
@@ -45,5 +45,5 @@ interface HabitDao {
 
     @Transaction
     @Query("DELETE FROM SelectedDate WHERE habitId = :habitId AND date = :date")
-    suspend fun deleteDate(habitId: Int, date: LocalDate)
+    suspend fun deleteDate(habitId: Int, date: KtLocalDate)
 }

@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.kotlinx.datetime)
 
     // DI – Hilt
     implementation(libs.dagger.hilt)

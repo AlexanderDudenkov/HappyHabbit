@@ -1,7 +1,9 @@
 package com.dudencov.happyhabit.domain.data
 
 import com.dudencov.happyhabit.domain.entities.Habit
-import java.time.LocalDate
+import com.dudencov.happyhabit.presentation.utils.max
+import com.dudencov.happyhabit.presentation.utils.min
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 interface HabitRepository {
 
@@ -13,16 +15,18 @@ interface HabitRepository {
 
     suspend fun deleteHabit(id: Int)
 
-    suspend fun getAllHabitsWithDates(period: ClosedRange<LocalDate> = LocalDate.MIN..LocalDate.MAX): Map<Habit, Set<LocalDate>>
+    suspend fun getAllHabitsWithDates(
+        period: ClosedRange<KtLocalDate> = KtLocalDate.min..KtLocalDate.max
+    ): Map<Habit, Set<KtLocalDate>>
 
     suspend fun getAllHabits(): List<Habit>
 
-    suspend fun createCurrentDate(habitId: Int, date: LocalDate)
+    suspend fun createCurrentDate(habitId: Int, date: KtLocalDate)
 
     suspend fun getHabitDates(
         habitId: Int,
-        period: ClosedRange<LocalDate> = LocalDate.MIN..LocalDate.MAX
-    ): Set<LocalDate>
+        period: ClosedRange<KtLocalDate> = KtLocalDate.min..KtLocalDate.max
+    ): Set<KtLocalDate>
 
-    suspend fun deleteDate(habitId: Int, date: LocalDate)
+    suspend fun deleteDate(habitId: Int, date: KtLocalDate)
 }

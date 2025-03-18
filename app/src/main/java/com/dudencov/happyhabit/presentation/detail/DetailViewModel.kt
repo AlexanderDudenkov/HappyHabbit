@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,11 +43,10 @@ class DetailViewModel @Inject constructor(
                 is DetailIntent.OnScreenSwiped -> {
                     _state.update {
                         val res = if (intent.direction == SwipeDirection.LEFT) {
-                            it.currentDate.plusMonths(1)
+                            it.currentDate.plus(1, DateTimeUnit.MONTH)
                         } else {
-                            it.currentDate.minusMonths(1)
+                            it.currentDate.minus(1, DateTimeUnit.MONTH)
                         }
-
                         it.copy(currentDate = res, swipeDirection = intent.direction)
                     }
                 }
