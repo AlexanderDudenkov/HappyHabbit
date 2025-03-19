@@ -1,9 +1,21 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt") version libs.versions.kotlin
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+}
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        load(FileInputStream(keystorePropertiesFile))
+    } else {
+        throw GradleException("Keystore properties file not found at ${keystorePropertiesFile.absolutePath}")
+    }
 }
 
 android {
@@ -15,7 +27,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0-beta1"
 
         testInstrumentationRunner = "com.dudencov.happyhabit.HiltTestRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -23,16 +35,31 @@ android {
             arguments {arg("room.schemaLocation", "$projectDir/schemas")}
         }
     }
-
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            val rawStoreFilePath = keystoreProperties.getProperty("storeFile")
+            val storeFilePath = rawStoreFilePath.replace("\"", "")
+            storeFile = File(storeFilePath)
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

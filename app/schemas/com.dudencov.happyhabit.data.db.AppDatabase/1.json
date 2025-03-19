@@ -59,7 +59,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_SelectedDate_habitId",
+            "unique": false,
+            "columnNames": [
+              "habitId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_SelectedDate_habitId` ON `${TABLE_NAME}` (`habitId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "Habit",
