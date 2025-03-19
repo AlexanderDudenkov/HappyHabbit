@@ -3,12 +3,12 @@ package com.dudencov.happyhabit.presentation.utils
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.LocalDate as KtLocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 fun getCurrentWeek(): ClosedRange<KtLocalDate> {
     val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
