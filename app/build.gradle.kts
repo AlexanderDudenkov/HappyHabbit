@@ -53,10 +53,18 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
+            applicationIdSuffix = ".release"
         }
         debug {
             isDebuggable = true
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
+        create("beta") {
+            applicationIdSuffix = ".beta"
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = false
+            isDebuggable = true
         }
     }
 
