@@ -64,7 +64,7 @@ android {
             applicationIdSuffix = ".beta"
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
-            isDebuggable = true
+            isDebuggable = false
         }
     }
 
