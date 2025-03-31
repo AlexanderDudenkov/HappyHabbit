@@ -3,9 +3,11 @@ package com.dudencov.happyhabit.presentation.habitdialog
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
+import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
 import com.dudencov.happyhabit.presentation.entities.HabitUi
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +31,7 @@ class HabitDialogViewModelTest {
 
     private lateinit var viewModel: HabitDialogViewModel
     private lateinit var repository: HabitRepository
+    private lateinit var habitValidationUseCase: HabitValidationUseCase
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -36,7 +39,8 @@ class HabitDialogViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         repository = mockk()
-        viewModel = HabitDialogViewModel(repository)
+        habitValidationUseCase = mockk(relaxed = true)
+        viewModel = HabitDialogViewModel(repository, habitValidationUseCase)
     }
 
     @After
@@ -96,6 +100,7 @@ class HabitDialogViewModelTest {
         val habitId = 1
         val habit = Habit(id = habitId, name = "Exercise")
         coEvery { repository.getHabit(habitId) } returns habit
+        every { habitValidationUseCase(allAny(), allAny()) } returns true
         viewModel.onIntent(HabitDialogIntent.OnSetHabitToTextField(habitId)) // Sets initialHabitName
 
         // When

@@ -3,6 +3,7 @@ package com.dudencov.happyhabit.presentation.habitdialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.domain.data.HabitRepository
+import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HabitDialogViewModel @Inject constructor(
-    private val repository: HabitRepository
+    private val repository: HabitRepository,
+    private val habitValidationUseCase: HabitValidationUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HabitDialogState())
@@ -52,10 +54,11 @@ class HabitDialogViewModel @Inject constructor(
             }
 
             is HabitDialogIntent.OnTextChanged -> {
+                val trimmedName = intent.text.trimStart()
                 _state.update {
                     it.copy(
-                        habitUi = it.habitUi.copy(name = intent.text),
-                        saveEnabled = intent.text.isNotEmpty() && intent.text != initialHabitName,
+                        habitUi = it.habitUi.copy(name = trimmedName),
+                        saveEnabled = habitValidationUseCase(trimmedName, initialHabitName)
                     )
                 }
             }
@@ -63,11 +66,11 @@ class HabitDialogViewModel @Inject constructor(
             is HabitDialogIntent.OnSave -> {
                 viewModelScope.launch {
                     if (initialHabitName.isEmpty()) {
-                        repository.createHabit(habitName = state.value.habitUi.name)
+                        repository.createHabit(habitName = state.value.habitUi.name.trim())
                     } else {
                         repository.updateHabitName(
                             habitId = state.value.habitUi.id,
-                            habitName = state.value.habitUi.name
+                            habitName = state.value.habitUi.name.trim()
                         )
                     }
                     _sideEffect.emit(HabitDialogSideEffect.OnDismiss)
