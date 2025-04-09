@@ -58,7 +58,7 @@ fun HomeScreen(
     Scaffold(
         bottomBar = { BottomBar(state, onIntent) },
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(modifier = Modifier.padding(paddingValues).padding(top = 16.dp)) {
             HabitList(state, onIntent)
             EmptyState(state)
         }
