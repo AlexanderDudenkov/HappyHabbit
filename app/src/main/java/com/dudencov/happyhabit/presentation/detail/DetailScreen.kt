@@ -49,8 +49,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.LocalDate as KtLocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.plus
 
 @Composable
 fun DetailScreen(
@@ -166,17 +167,12 @@ private fun DatesGrid(
         columns = GridCells.Fixed(7),
         modifier = Modifier.fillMaxWidth()
     ) {
-        val targetFirstDay = KtLocalDate(targetDate.year, targetDate.month, 1)
-        val targetDaysInMonth = targetDate.toJavaLocalDate().lengthOfMonth()
-        val targetFirstDayOfWeek = targetFirstDay.dayOfWeek.value
-        val offset = targetFirstDayOfWeek - 1
-
-        items(offset) {
+        items(state.calendarDataUi.offset) {
             Box(modifier = Modifier.size(48.dp))
         }
 
-        items(targetDaysInMonth) { dayIndex ->
-            val date = KtLocalDate(targetDate.year, targetDate.month, dayIndex + 1)
+        items(state.calendarDataUi.targetDaysInMonth) { dayIndex ->
+            val date = state.calendarDataUi.targetFirstDay.plus(dayIndex, DateTimeUnit.DAY)
             val isActive = state.selectedDates.contains(date)
             val textColor = if (isActive) {
                 MaterialTheme.colorScheme.primary

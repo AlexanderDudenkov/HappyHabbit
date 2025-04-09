@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import kotlinx.datetime.toJavaLocalDate
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
@@ -35,7 +37,8 @@ class DetailViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             habitId = intent.id,
-                            selectedDates = repository.getHabitDates(habitId = intent.id)
+                            selectedDates = repository.getHabitDates(habitId = intent.id),
+                            calendarDataUi = calculateCalendarData(it.currentDate)
                         )
                     }
                 }
@@ -47,7 +50,11 @@ class DetailViewModel @Inject constructor(
                         } else {
                             it.currentDate.minus(1, DateTimeUnit.MONTH)
                         }
-                        it.copy(currentDate = res, swipeDirection = intent.direction)
+                        it.copy(
+                            currentDate = res, 
+                            swipeDirection = intent.direction,
+                            calendarDataUi = calculateCalendarData(res)
+                        )
                     }
                 }
 
@@ -70,5 +77,13 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun calculateCalendarData(targetDate: KtLocalDate): CalendarDataUi {
+        val targetFirstDay = KtLocalDate(targetDate.year, targetDate.month, 1)
+        val targetDaysInMonth = targetDate.toJavaLocalDate().lengthOfMonth()
+        val targetFirstDayOfWeek = targetFirstDay.dayOfWeek.value
+        val offset = targetFirstDayOfWeek - 1
+        return CalendarDataUi(targetFirstDay, targetDaysInMonth, targetFirstDayOfWeek, offset)
     }
 }

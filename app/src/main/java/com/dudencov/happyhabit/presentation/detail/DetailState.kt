@@ -11,7 +11,8 @@ data class DetailState(
     val habitId: Int = 0,
     val currentDate: KtLocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
     val selectedDates: Set<KtLocalDate> = emptySet(),
-    val swipeDirection: SwipeDirection = SwipeDirection.NONE
+    val swipeDirection: SwipeDirection = SwipeDirection.NONE,
+    val calendarDataUi: CalendarDataUi = CalendarDataUi()
 ) {
     fun createTitle(): String {
         return "${
