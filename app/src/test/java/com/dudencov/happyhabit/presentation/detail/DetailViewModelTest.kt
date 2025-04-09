@@ -89,7 +89,13 @@ class DetailViewModelTest {
         val exp = DetailState(
             habitId = habitId,
             currentDate = KtLocalDate(2023, 2, 1),
-            swipeDirection = SwipeDirection.LEFT
+            swipeDirection = SwipeDirection.LEFT,
+            calendarDataUi = CalendarDataUi(
+                targetFirstDay = KtLocalDate(2023, 2, 1),
+                targetDaysInMonth = 28,
+                targetFirstDayOfWeek = 3,
+                offset = 2
+            )
         )
         val act = viewModel.state.first()
 
@@ -110,7 +116,13 @@ class DetailViewModelTest {
         val exp = DetailState(
             habitId = habitId,
             currentDate = KtLocalDate(2022, 12, 1),
-            swipeDirection = SwipeDirection.RIGHT
+            swipeDirection = SwipeDirection.RIGHT,
+            calendarDataUi = CalendarDataUi(
+                targetFirstDay = KtLocalDate(2022, 12, 1),
+                targetDaysInMonth = 31,
+                targetFirstDayOfWeek = 4,
+                offset = 3
+            )
         )
         val act = viewModel.state.first()
 
