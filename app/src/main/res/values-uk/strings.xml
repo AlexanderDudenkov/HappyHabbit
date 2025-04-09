@@ -13,4 +13,9 @@
     <string name="habit_dialog.text_field.placeholder">Введи текст</string>
     <string name="habit_dialog.save_btn.title">Зберегти</string>
     <string name="weekly.appbar.title">Прогрес за тиждень</string>
+
+    <string name="delete_confirmation_dialog.title">Видалити звичку</string>
+    <string name="delete_confirmation_dialog.message">Ви впевнені, що хочете видалити цю звичку?</string>
+    <string name="delete_confirmation_dialog.confirm">Видалити</string>
+    <string name="delete_confirmation_dialog.cancel">Скасувати</string>
 </resources>

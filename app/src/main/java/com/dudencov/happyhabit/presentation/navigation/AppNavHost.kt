@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.dudencov.happyhabit.presentation.deleteconfirmationdialog.DeleteConfirmationDialogNode
 import com.dudencov.happyhabit.presentation.detail.DetailScreenNode
 import com.dudencov.happyhabit.presentation.habitdialog.HabitDialogNode
 import com.dudencov.happyhabit.presentation.home.HomeScreenNode
@@ -49,6 +50,16 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                 }
             )) {
             HabitDialogNode(navController)
+        }
+
+        dialog(
+            route = Routes.DeleteConfirmationDialog.ROUTE_PATTERN,
+            arguments = listOf(
+                navArgument(Routes.DeleteConfirmationDialog.HABIT_ID_ARG) {
+                    type = NavType.StringType
+                }
+            )) {
+            DeleteConfirmationDialogNode(navController)
         }
     }
 }

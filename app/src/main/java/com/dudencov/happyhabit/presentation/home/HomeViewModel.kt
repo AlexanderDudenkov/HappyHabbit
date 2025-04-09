@@ -52,18 +52,13 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeIntent.OnHabitDeleteClicked -> {
-                    repository.deleteHabit(intent.id)
-                    val habitItems = repository.getAllHabits().map {
-                        HabitItemUi(habit = it.toHabitUi())
-                    }
-
-                    _state.update {
-                        it.copy(
-                            isWeeklyEnabled = habitItems.isNotEmpty(),
-                            isEmptyStateVisible = habitItems.isEmpty(),
-                            habitItems = habitItems,
+                    _state.update { state ->
+                        state.updateItemMenuExpandState(
+                            habitId = intent.id,
+                            isExpanded = false
                         )
                     }
+                    _sideEffect.emit(HomeSideEffect.RouteToDeleteConfirmationDialog(intent.id))
                 }
 
                 is HomeIntent.OnHabitEditClicked -> {

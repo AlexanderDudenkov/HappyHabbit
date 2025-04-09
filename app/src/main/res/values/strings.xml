@@ -15,4 +15,9 @@
     <string name="button_back.content_desk">Back</string>
 
     <string name="weekly.appbar.title">Weekly progress</string>
+
+    <string name="delete_confirmation_dialog.title">Delete Habit</string>
+    <string name="delete_confirmation_dialog.message">Are you sure you want to delete this habit?</string>
+    <string name="delete_confirmation_dialog.confirm">Delete</string>
+    <string name="delete_confirmation_dialog.cancel">Cancel</string>
 </resources>

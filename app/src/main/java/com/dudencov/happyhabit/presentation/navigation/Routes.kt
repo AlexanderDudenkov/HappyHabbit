@@ -31,4 +31,14 @@ sealed class Routes {
 
         fun createRoute(habitId: Int? = null)= "$DESTINATION?$HABIT_ID_ARG=$habitId"
     }
+
+    data object DeleteConfirmationDialog : Routes() {
+        private const val DESTINATION = "delete_confirmation_dialog"
+        const val HABIT_ID_ARG = "habitId"
+        const val ROUTE_PATTERN = "$DESTINATION/{${HABIT_ID_ARG}}"
+
+        fun createRoute(habitId: Int): String {
+            return "$DESTINATION/$habitId"
+        }
+    }
 }

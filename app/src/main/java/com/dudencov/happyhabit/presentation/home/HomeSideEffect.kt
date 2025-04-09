@@ -10,4 +10,6 @@ sealed class HomeSideEffect {
         val title: HabitDialogTitle =
             if (habitId != null) HabitDialogTitle.EDIT else HabitDialogTitle.CREATE
     }
+
+    data class RouteToDeleteConfirmationDialog(val habitId: Int) : HomeSideEffect()
 }

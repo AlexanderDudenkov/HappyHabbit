@@ -62,6 +62,10 @@ private fun HandleSideEffects(
                 is HomeSideEffect.RouteToDialog -> {
                     navController.navigate(Routes.HabitDialog.createRoute(effect.habitId))
                 }
+
+                is HomeSideEffect.RouteToDeleteConfirmationDialog -> {
+                    navController.navigate(Routes.DeleteConfirmationDialog.createRoute(effect.habitId))
+                }
             }
         }
     }

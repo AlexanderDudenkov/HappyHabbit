@@ -6,7 +6,6 @@ import com.dudencov.happyhabit.domain.entities.Habit
 import com.dudencov.happyhabit.presentation.entities.HabitUi
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -130,21 +129,30 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun test_GIVEN_habit_id_WHEN_onHabitDeleteClicked_THEN_deletes_and_updates_state() = runTest {
+    fun test_GIVEN_habit_id_WHEN_onHabitDeleteClicked_THEN_navigates_to_delete_confirmation() = runTest {
         // Given
         val habitId = 1
-        coEvery { repository.deleteHabit(habitId) } returns Unit
-        coEvery { repository.getAllHabits() } returns emptyList()
+
+        // Then
+        var act: HomeSideEffect? = null
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            act = viewModel.sideEffect.first()
+        }
 
         // When
         viewModel.onIntent(HomeIntent.OnHabitDeleteClicked(habitId))
 
         // Then
-        coVerify { repository.deleteHabit(habitId) }
-        val exp = HomeState()
-        val act = viewModel.state.first()
-
+        val exp = HomeSideEffect.RouteToDeleteConfirmationDialog(habitId)
         assertEquals(exp, act)
+
+        val stateExp = HomeState(
+            habitItems = emptyList(),
+            isWeeklyEnabled = false,
+            isEmptyStateVisible = true
+        )
+        val stateAct = viewModel.state.first()
+        assertEquals(stateExp, stateAct)
     }
 
     @Test
