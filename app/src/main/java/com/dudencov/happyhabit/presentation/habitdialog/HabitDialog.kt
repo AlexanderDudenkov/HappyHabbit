@@ -44,6 +44,8 @@ fun HabitDialog(
                         localFocusManager.clearFocus()
                     }
                 ),
+                isError = state.errorResId != null,
+                supportingText = state.errorResId?.let { { Text(stringResource(it)) } },
                 modifier = Modifier.testTag(DialogTestTags.TEXT_FIELD.tag)
             )
         },

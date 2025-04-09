@@ -81,4 +81,8 @@ class HabitRepositoryImpl @Inject constructor(
     override suspend fun deleteDate(habitId: Int, date: KtLocalDate) {
         habitDao.deleteDate(habitId = habitId, date = date)
     }
+    
+    override suspend fun isHabitExist(habitName: String): Boolean {
+        return habitDao.isHabitExist(habitName)
+    }
 }

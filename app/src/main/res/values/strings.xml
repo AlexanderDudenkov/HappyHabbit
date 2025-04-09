@@ -12,6 +12,7 @@
     <string name="habit_dialog.text_field.placeholder">Type text</string>
     <string name="habit_dialog.save_btn.title">Save</string>
     <string name="habit_dialog.cancel_btn.title">Cancel</string>
+    <string name="habit_dialog.error.duplicate_name">A habit with this name already exists!</string>
     <string name="button_back.content_desk">Back</string>
 
     <string name="weekly.appbar.title">Weekly progress</string>

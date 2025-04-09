@@ -46,4 +46,7 @@ interface HabitDao {
     @Transaction
     @Query("DELETE FROM SelectedDate WHERE habitId = :habitId AND date = :date")
     suspend fun deleteDate(habitId: Int, date: KtLocalDate)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM Habit WHERE LOWER(name) = LOWER(:habitName))")
+    suspend fun isHabitExist(habitName: String): Boolean
 }

@@ -2,6 +2,7 @@ package com.dudencov.happyhabit.presentation.habitdialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
 import com.dudencov.happyhabit.presentation.entities.toHabitUi
@@ -58,19 +59,28 @@ class HabitDialogViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         habitUi = it.habitUi.copy(name = trimmedName),
-                        saveEnabled = habitValidationUseCase(trimmedName, initialHabitName)
+                        saveEnabled = habitValidationUseCase(trimmedName, initialHabitName),
+                        errorResId = null
                     )
                 }
             }
 
             is HabitDialogIntent.OnSave -> {
                 viewModelScope.launch {
+                    val trimmedName = state.value.habitUi.name.trim()
+                    
                     if (initialHabitName.isEmpty()) {
-                        repository.createHabit(habitName = state.value.habitUi.name.trim())
+                        if (repository.isHabitExist(trimmedName)) {
+                            _state.update {
+                                it.copy(errorResId = R.string.habit_dialog_error_duplicate_name)
+                            }
+                            return@launch
+                        }
+                        repository.createHabit(habitName = trimmedName)
                     } else {
                         repository.updateHabitName(
                             habitId = state.value.habitUi.id,
-                            habitName = state.value.habitUi.name.trim()
+                            habitName = trimmedName
                         )
                     }
                     _sideEffect.emit(HabitDialogSideEffect.OnDismiss)

@@ -9,6 +9,7 @@ data class HabitDialogState(
     val title: HabitDialogTitle = HabitDialogTitle.CREATE,
     val habitUi: HabitUi = HabitUi(),
     val saveEnabled: Boolean = false,
+    val errorResId: Int? = null,
 )
 
 @Parcelize

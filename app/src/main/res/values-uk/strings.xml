@@ -12,6 +12,7 @@
     <string name="habit_dialog.edit_habit.title">Змінити звичку</string>
     <string name="habit_dialog.text_field.placeholder">Введи текст</string>
     <string name="habit_dialog.save_btn.title">Зберегти</string>
+    <string name="habit_dialog.error.duplicate_name">Звичка з такою назвою вже існує!</string>
     <string name="weekly.appbar.title">Прогрес за тиждень</string>
 
     <string name="delete_confirmation_dialog.title">Видалити звичку</string>

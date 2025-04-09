@@ -29,4 +29,6 @@ interface HabitRepository {
     ): Set<KtLocalDate>
 
     suspend fun deleteDate(habitId: Int, date: KtLocalDate)
+    
+    suspend fun isHabitExist(habitName: String): Boolean
 }

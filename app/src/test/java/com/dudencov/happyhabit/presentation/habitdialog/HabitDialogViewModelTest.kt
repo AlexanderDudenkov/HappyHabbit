@@ -1,6 +1,7 @@
 package com.dudencov.happyhabit.presentation.habitdialog
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
 import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
@@ -150,6 +151,7 @@ class HabitDialogViewModelTest {
     fun test_GIVEN_new_habit_WHEN_onSave_THEN_creates_habit_and_emits_dismiss() = runTest {
         // Given
         viewModel.onIntent(HabitDialogIntent.OnTextChanged("Run")) // Sets name, initialHabitName empty
+        coEvery { repository.isHabitExist("Run") } returns false
         coEvery { repository.createHabit("Run") } returns Unit
 
         // Then
@@ -163,8 +165,29 @@ class HabitDialogViewModelTest {
         viewModel.onIntent(HabitDialogIntent.OnSave)
 
         // Then
+        coVerify { repository.isHabitExist("Run") }
         coVerify { repository.createHabit("Run") }
+        assertEquals(exp, act)
+    }
 
+    @Test
+    fun test_GIVEN_new_habit_with_existing_name_WHEN_onSave_THEN_shows_error_and_does_not_create() = runTest {
+        // Given
+        viewModel.onIntent(HabitDialogIntent.OnTextChanged("Run")) // Sets name, initialHabitName empty
+        coEvery { repository.isHabitExist("Run") } returns true
+
+        // When
+        viewModel.onIntent(HabitDialogIntent.OnSave)
+
+        // Then
+        coVerify { repository.isHabitExist("Run") }
+        coVerify(exactly = 0) { repository.createHabit(any()) }
+        
+        val exp = HabitDialogState(
+            habitUi = HabitUi(name = "Run"),
+            errorResId = R.string.habit_dialog_error_duplicate_name
+        )
+        val act = viewModel.state.first()
         assertEquals(exp, act)
     }
 
@@ -189,6 +212,7 @@ class HabitDialogViewModelTest {
         viewModel.onIntent(HabitDialogIntent.OnSave)
 
         // Then
+        coVerify(exactly = 0) { repository.isHabitExist(any()) }
         coVerify { repository.updateHabitName(habitId, "Run") }
         assertEquals(exp, act)
     }
