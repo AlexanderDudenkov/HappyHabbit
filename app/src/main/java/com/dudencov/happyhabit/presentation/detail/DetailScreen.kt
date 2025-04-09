@@ -49,9 +49,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import kotlinx.datetime.LocalDate as KtLocalDate
+import com.dudencov.happyhabit.presentation.utils.isCurrentDay
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.plus
+import kotlinx.datetime.LocalDate as KtLocalDate
 
 @Composable
 fun DetailScreen(
@@ -174,6 +175,7 @@ private fun DatesGrid(
         items(state.calendarDataUi.targetDaysInMonth) { dayIndex ->
             val date = state.calendarDataUi.targetFirstDay.plus(dayIndex, DateTimeUnit.DAY)
             val isActive = state.selectedDates.contains(date)
+            val isCurrentDay = date.isCurrentDay()
             val textColor = if (isActive) {
                 MaterialTheme.colorScheme.primary
             } else {
@@ -188,12 +190,31 @@ private fun DatesGrid(
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = (dayIndex + 1).toString(),
-                    color = textColor,
-                    textAlign = TextAlign.Center,
-                    fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
-                )
+                if (isCurrentDay) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = (dayIndex + 1).toString(),
+                            color = textColor,
+                            textAlign = TextAlign.Center,
+                            fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
+                        )
+                    }
+                } else {
+                    Text(
+                        text = (dayIndex + 1).toString(),
+                        color = textColor,
+                        textAlign = TextAlign.Center,
+                        fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
+                    )
+                }
             }
         }
     }
