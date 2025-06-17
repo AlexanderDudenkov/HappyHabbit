@@ -11,6 +11,8 @@ import com.dudencov.happyhabit.presentation.deleteconfirmationdialog.DeleteConfi
 import com.dudencov.happyhabit.presentation.detail.DetailScreenNode
 import com.dudencov.happyhabit.presentation.habitdialog.HabitDialogNode
 import com.dudencov.happyhabit.presentation.home.HomeScreenNode
+import com.dudencov.happyhabit.presentation.notification.NotificationScreenNode
+import com.dudencov.happyhabit.presentation.settings.SettingsScreenNode
 import com.dudencov.happyhabit.presentation.utils.animatedComposable
 import com.dudencov.happyhabit.presentation.weekly.WeeklyProgressScreenNode
 
@@ -37,8 +39,16 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             DetailScreenNode(navController)
         }
 
-        animatedComposable(Routes.WeeklyProgress.WEEKLY) {
+        animatedComposable(Routes.WeeklyProgress.ROUTE_PATTERN) {
             WeeklyProgressScreenNode(navController)
+        }
+
+        animatedComposable(Routes.Notification.ROUTE_PATTERN) {
+            NotificationScreenNode(navController)
+        }
+
+        animatedComposable(Routes.Settings.ROUTE_PATTERN) {
+            SettingsScreenNode(navController)
         }
 
         dialog(

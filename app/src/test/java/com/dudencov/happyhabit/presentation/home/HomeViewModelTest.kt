@@ -14,6 +14,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -50,7 +51,7 @@ class HomeViewModelTest {
     @Test
     fun test_GIVEN_repo_empty_habits_WHEN_onResume_THEN_shows_empty_state() = runTest {
         //Given
-        coEvery { repository.getAllHabits() } returns emptyList()
+        coEvery { repository.getAllHabits() } returns flowOf(emptyList())
 
         //When
         viewModel.onIntent(HomeIntent.OnResume)
@@ -70,7 +71,7 @@ class HomeViewModelTest {
     fun test_GIVEN_repo_non_empty_habits_WHEN_onResume_THEN_shows_habits() = runTest {
         //Given
         val habits = listOf(Habit(1, "Test Habit"))
-        coEvery { repository.getAllHabits() } returns habits
+        coEvery { repository.getAllHabits() } returns flowOf(habits)
 
         mockkStatic("com.dudencov.happyhabit.presentation.entities.HabitUiKt")
         every { any<Habit>().toHabitUi() } returns HabitUi(1, "Test Habit")
@@ -159,7 +160,7 @@ class HomeViewModelTest {
     fun test_GIVEN_menu_expanded_WHEN_onHabitEditClicked_THEN_collapses_menu_and_routes_to_edit_dialog() = runTest {
         // Given
         val habit = Habit(1, "Test")
-        coEvery { repository.getAllHabits() } returns listOf(habit)
+        coEvery { repository.getAllHabits() } returns flowOf(listOf(habit))
         viewModel.onIntent(HomeIntent.OnResume) // Initial state
         viewModel.onIntent(HomeIntent.OnHabitItemMenuClicked(1, false)) // Expand menu
 
@@ -189,7 +190,7 @@ class HomeViewModelTest {
     fun test_GIVEN_menu_collapsed_WHEN_onHabitItemMenuClicked_THEN_expands_menu() = runTest {
         // Given
         val habit = Habit(1, "Test")
-        coEvery { repository.getAllHabits() } returns listOf(habit)
+        coEvery { repository.getAllHabits() } returns flowOf(listOf(habit))
         viewModel.onIntent(HomeIntent.OnResume) // Initial state with menu collapsed
 
         // When
@@ -210,7 +211,7 @@ class HomeViewModelTest {
     fun test_GIVEN_menu_expanded_WHEN_onHabitItemMenuDismissed_THEN_collapses_menu() = runTest {
         // Given
         val habit = Habit(1, "Test")
-        coEvery { repository.getAllHabits() } returns listOf(habit)
+        coEvery { repository.getAllHabits() } returns flowOf(listOf(habit))
         viewModel.onIntent(HomeIntent.OnResume) // Initial state
         viewModel.onIntent(HomeIntent.OnHabitItemMenuClicked(1, false)) // Expand menu
 

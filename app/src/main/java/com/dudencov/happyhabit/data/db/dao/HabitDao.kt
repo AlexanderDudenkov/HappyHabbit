@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import com.dudencov.happyhabit.data.db.entities.HabitEntity
 import com.dudencov.happyhabit.data.db.entities.HabitWithSelectedDaysDto
 import com.dudencov.happyhabit.data.db.entities.SelectedDateEntity
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate as KtLocalDate
 
 @Dao
@@ -15,10 +16,10 @@ interface HabitDao {
 
     @Transaction
     @Query("SELECT * FROM Habit")
-    suspend fun getAllHabitsWithDates(): List<HabitWithSelectedDaysDto>
+    fun getAllHabitsWithDates(): Flow<List<HabitWithSelectedDaysDto>>
 
     @Query("SELECT * FROM Habit")
-    suspend fun getAllHabits(): List<HabitEntity>
+    fun getAllHabits(): Flow<List<HabitEntity>>
 
     @Query("SELECT * FROM Habit WHERE id = :habitId")
     suspend fun getHabit(habitId: Int): HabitEntity?

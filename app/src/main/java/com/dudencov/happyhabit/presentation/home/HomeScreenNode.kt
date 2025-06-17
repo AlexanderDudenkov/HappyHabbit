@@ -56,7 +56,11 @@ private fun HandleSideEffects(
                 }
 
                 HomeSideEffect.RouteToWeeklyProgress -> {
-                    navController.navigate(Routes.WeeklyProgress.WEEKLY)
+                    navController.navigate(Routes.WeeklyProgress.ROUTE_PATTERN)
+                }
+
+                HomeSideEffect.RouteToSettings -> {
+                    navController.navigate(Routes.Settings.ROUTE_PATTERN)
                 }
 
                 is HomeSideEffect.RouteToDialog -> {

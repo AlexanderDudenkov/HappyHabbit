@@ -1,15 +1,9 @@
 package com.dudencov.happyhabit.presentation.home
 
-import com.dudencov.happyhabit.presentation.habitdialog.HabitDialogTitle
-
-sealed class HomeSideEffect {
-    data class RouteToDetails(val habitId: Int) : HomeSideEffect()
-    data object RouteToWeeklyProgress : HomeSideEffect()
-
-    data class RouteToDialog(val habitId: Int? = null) : HomeSideEffect() {
-        val title: HabitDialogTitle =
-            if (habitId != null) HabitDialogTitle.EDIT else HabitDialogTitle.CREATE
-    }
-
-    data class RouteToDeleteConfirmationDialog(val habitId: Int) : HomeSideEffect()
+sealed interface HomeSideEffect {
+    data class RouteToDetails(val habitId: Int) : HomeSideEffect
+    data object RouteToWeeklyProgress : HomeSideEffect
+    data object RouteToSettings : HomeSideEffect
+    data class RouteToDialog(val habitId: Int? = null) : HomeSideEffect
+    data class RouteToDeleteConfirmationDialog(val habitId: Int) : HomeSideEffect
 }

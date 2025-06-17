@@ -19,4 +19,20 @@
     <string name="delete_confirmation_dialog.message">Ви впевнені, що хочете видалити цю звичку?</string>
     <string name="delete_confirmation_dialog.confirm">Видалити</string>
     <string name="delete_confirmation_dialog.cancel">Скасувати</string>
+
+    <string name="settings_title">Налаштування</string>
+
+    <string name="notification_settings_title">Сповіщення</string>
+    <string name="reminder_time_content_desc">Час нагадування</string>
+    <string name="no_reminder_set">Нагадування не встановлено</string>
+    <string name="select_reminder_time">Виберіть час нагадування</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="notification_settings_reminder">Нагадування відмітити виконані звички</string>
+
+    <string name="notification_channel_name">Нагадування про звички</string>
+    <string name="notification_channel_description">Сповіщення для ваших щоденних звичок</string>
+    <string name="habit_reminder_title">Час для вашої звички!</string>
+    <string name="habit_reminder_text">Не забудьте відмітити ваші звички</string>
+
 </resources>

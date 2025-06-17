@@ -102,6 +102,11 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.kotlinx.datetime)
 
+    // WorkManager for background tasks and notifications
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    kapt(libs.hilt.work.compiler)
+
     // DI – Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)

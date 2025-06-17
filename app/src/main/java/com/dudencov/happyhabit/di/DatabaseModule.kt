@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.dudencov.happyhabit.data.db.AppDatabase
 import com.dudencov.happyhabit.data.db.dao.HabitDao
+import com.dudencov.happyhabit.data.db.dao.ReminderTimeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,11 +23,18 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "app_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     fun provideHabitDao(database: AppDatabase): HabitDao {
         return database.habitDao()
+    }
+
+    @Provides
+    fun provideReminderTimeDao(database: AppDatabase): ReminderTimeDao {
+        return database.reminderTimeDao()
     }
 }

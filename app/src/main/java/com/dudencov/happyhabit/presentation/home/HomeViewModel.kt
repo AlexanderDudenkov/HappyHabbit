@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 HomeIntent.OnResume -> {
-                    val habitItems = repository.getAllHabits().map {
+                    val habitItems = repository.getAllHabits().first().map {
                         HabitItemUi(habit = it.toHabitUi())
                     }
 
@@ -44,7 +45,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeIntent.OnHabitClicked -> {
-                    _sideEffect.emit(HomeSideEffect.RouteToDetails(intent.habitId))
+                    _sideEffect.emit(HomeSideEffect.RouteToDetails(intent.id))
                 }
 
                 HomeIntent.OnFabClicked -> {
@@ -75,6 +76,10 @@ class HomeViewModel @Inject constructor(
 
                 HomeIntent.OnWeeklyProgressClicked -> {
                     _sideEffect.emit(HomeSideEffect.RouteToWeeklyProgress)
+                }
+
+                HomeIntent.OnSettingsClicked -> {
+                    _sideEffect.emit(HomeSideEffect.RouteToSettings)
                 }
 
                 is HomeIntent.OnHabitItemMenuClicked -> {

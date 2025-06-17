@@ -20,7 +20,18 @@ sealed class Routes {
     }
 
     data object WeeklyProgress : Routes() {
-        const val WEEKLY = "weekly_progress"
+        private const val DESTINATION = "weekly_progress"
+        const val ROUTE_PATTERN = DESTINATION
+    }
+
+    data object Notification : Routes() {
+        private const val DESTINATION = "notification"
+        const val ROUTE_PATTERN = DESTINATION
+    }
+
+    data object Settings : Routes() {
+        private const val DESTINATION = "settings"
+        const val ROUTE_PATTERN = DESTINATION
     }
 
     data object HabitDialog : Routes() {
@@ -29,7 +40,7 @@ sealed class Routes {
         const val HABIT_ID_SEND_RESULT = "saved_habit_id"
         const val ROUTE_PATTERN = "$DESTINATION?$HABIT_ID_ARG={$HABIT_ID_ARG}"
 
-        fun createRoute(habitId: Int? = null)= "$DESTINATION?$HABIT_ID_ARG=$habitId"
+        fun createRoute(habitId: Int? = null) = "$DESTINATION?$HABIT_ID_ARG=$habitId"
     }
 
     data object DeleteConfirmationDialog : Routes() {

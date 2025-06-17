@@ -12,6 +12,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -65,7 +66,7 @@ class WeeklyProgressViewModelTest {
         // Given
         val habit = Habit(id = 1, name = "Exercise")
         val selectedDates = setOf(KtLocalDate(2023, 1, 2), KtLocalDate(2023, 1, 4)) // Mon, Wed
-        coEvery { repository.getAllHabitsWithDates(currentWeek) } returns mapOf(habit to selectedDates)
+        coEvery { repository.getAllHabitsWithDates(currentWeek) } returns flowOf(mapOf(habit to selectedDates))
 
         // When
         viewModel.onIntent(WeeklyProgressIntent.OnCreate)
@@ -96,7 +97,7 @@ class WeeklyProgressViewModelTest {
     @Test
     fun test_GIVEN_empty_habits_WHEN_onCreate_THEN_updates_to_empty_habits() = runTest {
         // Given
-        coEvery { repository.getAllHabitsWithDates(currentWeek) } returns emptyMap()
+        coEvery { repository.getAllHabitsWithDates(currentWeek) } returns flowOf(emptyMap())
 
         // When
         viewModel.onIntent(WeeklyProgressIntent.OnCreate)

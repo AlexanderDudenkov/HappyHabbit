@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DayOfWeek
@@ -47,7 +49,7 @@ class WeeklyProgressViewModel @Inject constructor(
     private suspend fun createWeeklyHabitsUi(): List<WeeklyHabitUi> {
         val currentWeek = getCurrentWeek()
 
-        return repository.getAllHabitsWithDates(currentWeek).map {
+        return repository.getAllHabitsWithDates(currentWeek).first().map {
             WeeklyHabitUi(
                 id = it.key.id,
                 name = it.key.name,

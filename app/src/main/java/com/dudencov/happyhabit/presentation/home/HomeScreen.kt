@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,8 +25,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,6 +46,7 @@ import com.dudencov.happyhabit.presentation.home.HomeTestTags.LIST_DROPDOWN_MENU
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.LIST_ITEM
+import com.dudencov.happyhabit.presentation.home.HomeTestTags.SETTINGS_BTN
 import com.dudencov.happyhabit.presentation.home.HomeTestTags.WEEKLY_BTN
 import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 
@@ -74,8 +74,6 @@ private fun BottomBar(
         actions = {
             IconButton(
                 modifier = Modifier.testTag(WEEKLY_BTN.tag),
-                colors = IconButtonDefaults.iconButtonColors()
-                    .copy(contentColor = MaterialTheme.colorScheme.primary),
                 enabled = state.isWeeklyEnabled,
                 onClick = {
                     onIntent(HomeIntent.OnWeeklyProgressClicked)
@@ -83,6 +81,16 @@ private fun BottomBar(
                 Icon(
                     imageVector = Icons.Default.DateRange,
                     contentDescription = stringResource(R.string.weekly_progress_content_desc)
+                )
+            }
+            IconButton(
+                modifier = Modifier.testTag(SETTINGS_BTN.tag),
+                onClick = {
+                    onIntent(HomeIntent.OnSettingsClicked)
+                }) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.settings_title)
                 )
             }
         },
