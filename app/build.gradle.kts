@@ -25,15 +25,12 @@ android {
     defaultConfig {
         applicationId = "com.dudencov.happyhabit"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 2
         versionName = "1.0.0-beta2"
 
         testInstrumentationRunner = "com.dudencov.happyhabit.HiltTestRunner"
         vectorDrawables { useSupportLibrary = true }
-        kapt {
-            arguments {arg("room.schemaLocation", "$projectDir/schemas")}
-        }
     }
     signingConfigs {
         create("release") {
@@ -48,6 +45,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -64,6 +62,7 @@ android {
             applicationIdSuffix = ".beta"
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
         }
     }
@@ -86,6 +85,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+kapt {
+    arguments {arg("room.schemaLocation", "$projectDir/schemas")}
 }
 
 dependencies {

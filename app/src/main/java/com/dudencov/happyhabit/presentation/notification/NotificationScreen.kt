@@ -44,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
 import kotlinx.datetime.LocalTime
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -157,7 +158,7 @@ private fun HabitNotificationItem(
 
             Text(
                 text = habit.reminderTime?.let {
-                    String.format("%02d:%02d", it.hour, it.minute)
+                    String.format(Locale.getDefault(), "%02d:%02d", it.hour, it.minute)
                 } ?: context.getString(R.string.empty_time),
                 style = MaterialTheme.typography.bodyMedium
             )

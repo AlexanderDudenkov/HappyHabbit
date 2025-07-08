@@ -17,7 +17,7 @@ import com.dudencov.happyhabit.presentation.utils.animatedComposable
 import com.dudencov.happyhabit.presentation.weekly.WeeklyProgressScreenNode
 
 @Composable
-fun AppNavHost(navController: NavHostController = rememberNavController()) {
+fun AppNavHost(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Routes.Home.ROUTE_PATTERN) {
         animatedComposable(
