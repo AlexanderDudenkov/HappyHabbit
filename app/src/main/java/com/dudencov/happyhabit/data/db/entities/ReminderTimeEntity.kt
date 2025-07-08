@@ -8,6 +8,6 @@ import kotlinx.datetime.LocalTime
 @Entity(tableName = "ReminderTime")
 data class ReminderTimeEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "name") val name: String = "",
     @ColumnInfo(name = "reminder_time") val reminderTime: LocalTime? = null
 )

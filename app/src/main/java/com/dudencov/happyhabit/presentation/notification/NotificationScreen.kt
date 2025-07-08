@@ -142,7 +142,7 @@ private fun HabitNotificationItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = habit.name,
+                text = stringResource(R.string.notification_settings_reminder),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f)
             )
