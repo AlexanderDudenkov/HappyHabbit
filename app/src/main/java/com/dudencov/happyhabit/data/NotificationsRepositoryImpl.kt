@@ -1,6 +1,7 @@
 package com.dudencov.happyhabit.data
 
 import com.dudencov.happyhabit.data.db.dao.ReminderTimeDao
+import com.dudencov.happyhabit.data.db.entities.ReminderTimeEntity
 import com.dudencov.happyhabit.domain.data.NotificationsRepository
 import com.dudencov.happyhabit.domain.entities.ReminderTime
 import com.dudencov.happyhabit.domain.entities.toReminderTime
@@ -12,6 +13,11 @@ class NotificationsRepositoryImpl @Inject constructor(
 ) : NotificationsRepository {
 
     override suspend fun getAllReminders(): List<ReminderTime> {
+        if (reminderTimeDao.isExist().not()) {
+            reminderTimeDao.insert(
+                entity = ReminderTimeEntity()
+            )
+        }
         return reminderTimeDao.getAll()
             .map {
                 ReminderTime(

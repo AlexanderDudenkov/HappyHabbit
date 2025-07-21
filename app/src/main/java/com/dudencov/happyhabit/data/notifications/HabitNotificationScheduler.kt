@@ -1,62 +1,98 @@
 package com.dudencov.happyhabit.data.notifications
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.dudencov.happyhabit.data.notifications.HabitNotificationWorker.Companion.REMINDER_ID_KEY
-import com.dudencov.happyhabit.data.notifications.HabitNotificationWorker.Companion.REMINDER_NAME_KEY
+import android.content.Intent
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Duration.Companion.days
+
+const val HABIT_ID_EXTRA = "habit_id_extra"
+const val HABIT_HOUR_EXTRA = "habit_hour_extra"
+const val HABIT_MINUTE_EXTRA = "habit_minute_extra"
 
 @Singleton
 class HabitNotificationScheduler @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val workManager by lazy { WorkManager.getInstance(context) }
 
-    fun scheduleNotification(reminderId: Long, reminderName: String, reminderTime: LocalTime) {
-        val now = kotlinx.datetime.Clock.System.now()
-        val today = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-        val targetDateTime = LocalDateTime(today, reminderTime)
-        val targetInstant = targetDateTime.toInstant(TimeZone.currentSystemDefault())
+    private val alarmManager: AlarmManager by lazy {
+        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    }
 
-        // If the time has already passed today, schedule for tomorrow
-        val initialDelay = if (targetInstant > now) {
-            targetInstant - now
-        } else {
-            targetInstant.plus(1.days) - now
+    fun scheduleNotification(
+        reminderTime: LocalTime,
+        reminderId: Int
+    ) {
+        val now = Clock.System.now()
+        val timeZone = TimeZone.currentSystemDefault()
+
+        val today: LocalDate = now.toLocalDateTime(timeZone).date
+        val currentDateTime: LocalDateTime = now.toLocalDateTime(timeZone)
+
+        var targetDate = today
+        val todayReminderDateTime = LocalDateTime(today, reminderTime)
+
+        if (todayReminderDateTime <= currentDateTime) {
+            targetDate = today.plus(1, DateTimeUnit.DAY)
         }
 
-        val inputData = workDataOf(
-            REMINDER_ID_KEY to reminderId,
-            REMINDER_NAME_KEY to reminderName
+        val targetDateTime = LocalDateTime(date = targetDate, time = reminderTime)
+        val triggerMillis = targetDateTime.toInstant(timeZone).toEpochMilliseconds()
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            triggerMillis,
+            createPendingIntent(reminderTime = reminderTime, reminderId = reminderId)
         )
 
-        val notificationWork = PeriodicWorkRequestBuilder<HabitNotificationWorker>(
-            24, TimeUnit.HOURS
-        )
-            .setInitialDelay(initialDelay.inWholeMilliseconds, TimeUnit.MILLISECONDS)
-            .setInputData(inputData)
-            .build()
-
-        workManager.enqueueUniquePeriodicWork(
-            "habit_reminder_$reminderId",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            notificationWork
+        Log.d(
+            "HabitNotificationScheduler",
+            "Next alarm scheduled for: $targetDateTime ($triggerMillis)"
         )
     }
 
-    fun cancelNotification(reminderId: Long) {
-        workManager.cancelUniqueWork("habit_reminder_$reminderId")
+    fun cancelNotification(
+        reminderTime: LocalTime,
+        reminderId: Int,
+    ) {
+        alarmManager.cancel(
+            createPendingIntent(
+                reminderTime = reminderTime,
+                reminderId = reminderId
+            )
+        )
+
+        Log.d("HabitNotificationScheduler", "Alarm canceled for habitId: $reminderId")
     }
-} 
+
+    private fun createPendingIntent(
+        reminderTime: LocalTime,
+        reminderId: Int
+    ): PendingIntent {
+        val intent = Intent(context, DailyReminderReceiver::class.java).apply {
+            putExtra(HABIT_ID_EXTRA, reminderId)
+            putExtra(HABIT_HOUR_EXTRA, reminderTime.hour)
+            putExtra(HABIT_MINUTE_EXTRA, reminderTime.minute)
+        }
+
+        return PendingIntent.getBroadcast(
+            context,
+            reminderId,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+}

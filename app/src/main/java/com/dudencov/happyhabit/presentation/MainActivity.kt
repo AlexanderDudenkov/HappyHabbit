@@ -13,9 +13,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.dudencov.happyhabit.data.notifications.NotificationPermissionHelper
 import com.dudencov.happyhabit.presentation.navigation.AppNavHost
+import com.dudencov.happyhabit.presentation.navigation.Routes
 import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
+const val ACTION_SHOW_REMINDER = "com.dudencov.happyhabit.ACTION_SHOW_REMINDER"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -61,10 +64,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        if (intent.action == "com.example.happyhabit.ACTION_SHOW_REMINDER") {
+        if (intent.action == ACTION_SHOW_REMINDER) {
             navController?.apply {
                 popBackStack(graph.startDestinationId, false)
-                navigate("home")
+                navigate(Routes.Home.ROUTE_PATTERN)
             }
         }
     }

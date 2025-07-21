@@ -25,21 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.example.happyhabit.ACTION_SHOW_REMINDER" />
+                <action android:name="com.dudencov.happyhabit.ACTION_SHOW_REMINDER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
+        <receiver android:name=".data.notifications.DailyReminderReceiver" />
+
     </application>
 
 </manifest>

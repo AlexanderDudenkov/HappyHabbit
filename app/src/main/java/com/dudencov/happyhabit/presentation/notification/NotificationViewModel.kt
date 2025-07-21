@@ -81,14 +81,8 @@ class NotificationViewModel @Inject constructor(
         if (time != null) {
             val reminder = repository.getReminder(id)
             if (reminder != ReminderTime()) {
-                notificationScheduler.scheduleNotification(
-                    reminderId = id.toLong(),
-                    reminderName = reminder.name,
-                    reminderTime = time
-                )
+                notificationScheduler.scheduleNotification(reminderId = id, reminderTime = time)
             }
-        } else {
-            notificationScheduler.cancelNotification(reminderId = id.toLong())
         }
     }
 } 
