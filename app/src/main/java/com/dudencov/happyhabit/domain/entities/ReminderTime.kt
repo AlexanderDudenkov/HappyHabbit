@@ -6,11 +6,13 @@ import kotlinx.datetime.LocalTime
 data class ReminderTime(
     val id: Int = 0,
     val name: String = "",
-    val reminderTime: LocalTime? = null
+    val reminderTime: LocalTime = LocalTime(hour = 9, minute = 0, second = 0),
+    val isOn: Boolean = false
 )
 
 fun ReminderTimeEntity.toReminderTime() = ReminderTime(
     id = id,
     name = name,
-    reminderTime = reminderTime
+    reminderTime = reminderTime,
+    isOn = isOn
 )

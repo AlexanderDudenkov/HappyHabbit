@@ -9,5 +9,10 @@ import kotlinx.datetime.LocalTime
 data class ReminderTimeEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "name") val name: String = "",
-    @ColumnInfo(name = "reminder_time") val reminderTime: LocalTime? = null
+    @ColumnInfo(name = "reminder_time") val reminderTime: LocalTime = LocalTime(
+        hour = 9,
+        minute = 0,
+        second = 0
+    ),
+    @ColumnInfo(name = "is_reminder_on") val isOn: Boolean = false
 )

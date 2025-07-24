@@ -19,13 +19,7 @@ class NotificationsRepositoryImpl @Inject constructor(
             )
         }
         return reminderTimeDao.getAll()
-            .map {
-                ReminderTime(
-                    id = it.id,
-                    name = it.name,
-                    reminderTime = it.reminderTime
-                )
-            }
+            .map { it.toReminderTime() }
     }
 
     override suspend fun isRemindersExist(): Boolean {
@@ -41,5 +35,9 @@ class NotificationsRepositoryImpl @Inject constructor(
         reminderTime: LocalTime?
     ) {
         reminderTimeDao.updateReminderTimeById(id = id, reminderTime = reminderTime)
+    }
+
+    override suspend fun updateIsReminderOnById(id: Int, value: Boolean) {
+        reminderTimeDao.updateIsReminderOnById(id = id, isOn = value)
     }
 }

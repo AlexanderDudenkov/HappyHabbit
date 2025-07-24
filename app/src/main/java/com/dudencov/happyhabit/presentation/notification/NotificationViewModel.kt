@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.data.notifications.HabitNotificationScheduler
 import com.dudencov.happyhabit.domain.data.NotificationsRepository
-import com.dudencov.happyhabit.domain.entities.ReminderTime
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalTime
 import javax.inject.Inject
 
@@ -43,6 +44,41 @@ class NotificationViewModel @Inject constructor(
                 is NotificationIntent.OnSetReminderTime -> {
                     setReminderTime(intent.habitId, intent.time)
                 }
+
+                is NotificationIntent.OnSwitchItem -> {
+                    val item = state.value.items.find { it.id == intent.habitId }
+
+                    item?.let { item ->
+                        if (intent.currentValue) {
+                            notificationScheduler.cancelNotification(
+                                reminderTime = item.reminderTime,
+                                reminderId = intent.habitId
+                            )
+                        } else {
+                            notificationScheduler.scheduleNotification(
+                                reminderId = intent.habitId,
+                                reminderTime = item.reminderTime
+                            )
+                        }
+                    }
+
+                    withContext(Dispatchers.IO) {
+                        item?.id?.let {
+                            repository.updateIsReminderOnById(
+                                id = it,
+                                value = !intent.currentValue
+                            )
+                        }
+                    }
+
+                    _state.update {
+                        it.copy(items = it.items.map { item ->
+                            if (item.id == intent.habitId) {
+                                item.copy(isSwitchOn = !item.isSwitchOn)
+                            } else item
+                        })
+                    }
+                }
             }
         }
     }
@@ -52,7 +88,8 @@ class NotificationViewModel @Inject constructor(
             NotificationItemUi(
                 id = habit.id,
                 name = habit.name,
-                reminderTime = habit.reminderTime
+                reminderTime = habit.reminderTime,
+                isSwitchOn = habit.isOn
             )
         }
 
@@ -61,10 +98,9 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setReminderTime(id: Int, time: LocalTime?) {
+    private suspend fun setReminderTime(id: Int, time: LocalTime) {
         repository.updateReminderTimeById(id, time)
 
-        // Update the UI
         _state.update { state ->
             state.copy(
                 items = state.items.map {
@@ -77,12 +113,6 @@ class NotificationViewModel @Inject constructor(
             )
         }
 
-        // Schedule or cancel notification
-        if (time != null) {
-            val reminder = repository.getReminder(id)
-            if (reminder != ReminderTime()) {
-                notificationScheduler.scheduleNotification(reminderId = id, reminderTime = time)
-            }
-        }
+        notificationScheduler.scheduleNotification(reminderId = id, reminderTime = time)
     }
 } 

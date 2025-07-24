@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerState
@@ -33,7 +33,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,8 +41,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
+import com.dudencov.happyhabit.presentation.notification.NotificationIntent.OnSwitchItem
+import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 import kotlinx.datetime.LocalTime
 import java.util.Locale
 
@@ -119,14 +123,13 @@ private fun HabitList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HabitNotificationItem(
-    habit: NotificationItemUi,
+    itemState: NotificationItemUi,
     onIntent: (NotificationIntent) -> Unit
 ) {
-    val context = LocalContext.current
-    var showTimePicker by remember { mutableStateOf(false) }
+    var showTimePicker by rememberSaveable { mutableStateOf(false) }
     val timePickerState = rememberTimePickerState(
-        initialHour = habit.reminderTime?.hour ?: 9,
-        initialMinute = habit.reminderTime?.minute ?: 0
+        initialHour = itemState.reminderTime.hour,
+        initialMinute = itemState.reminderTime.minute
     )
 
     Card(
@@ -147,21 +150,26 @@ private fun HabitNotificationItem(
                 modifier = Modifier.weight(1f)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = stringResource(R.string.reminder_time_content_desc)
-            )
-
             Spacer(modifier = Modifier.width(8.dp))
-
             Text(
-                text = habit.reminderTime?.let {
+                text = itemState.reminderTime.let {
                     String.format(Locale.getDefault(), "%02d:%02d", it.hour, it.minute)
-                } ?: context.getString(R.string.empty_time),
+                },
                 style = MaterialTheme.typography.bodyMedium
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Switch(
+                itemState.isSwitchOn,
+                onCheckedChange = {
+                    onIntent(
+                        OnSwitchItem(
+                            habitId = itemState.id,
+                            currentValue = itemState.isSwitchOn
+                        )
+                    )
+                })
         }
     }
 
@@ -170,7 +178,12 @@ private fun HabitNotificationItem(
             timePickerState = timePickerState,
             onDismiss = { showTimePicker = false },
             onConfirm = { hour, minute ->
-                onIntent(NotificationIntent.OnSetReminderTime(habit.id, LocalTime(hour, minute)))
+                onIntent(
+                    NotificationIntent.OnSetReminderTime(
+                        itemState.id,
+                        LocalTime(hour, minute)
+                    )
+                )
                 showTimePicker = false
             }
         )
@@ -205,4 +218,16 @@ private fun TimePickerDialog(
             }
         }
     )
-} 
+}
+
+@Composable
+@PreviewScreenSizes
+@Preview(showSystemUi = false, showBackground = true)
+private fun PreviewState() {
+    HappyHabitTheme {
+        NotificationScreen(
+            state = NotificationState(items = listOf(NotificationItemUi(id = 1, name = "name"))),
+            onIntent = {},
+        )
+    }
+}

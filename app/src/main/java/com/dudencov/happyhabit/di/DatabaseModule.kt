@@ -3,6 +3,7 @@ package com.dudencov.happyhabit.di
 import android.content.Context
 import androidx.room.Room
 import com.dudencov.happyhabit.data.db.AppDatabase
+import com.dudencov.happyhabit.data.db.DatabaseMigrations.MIGRATION_3_4
 import com.dudencov.happyhabit.data.db.dao.HabitDao
 import com.dudencov.happyhabit.data.db.dao.ReminderTimeDao
 import dagger.Module
@@ -24,7 +25,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
         )
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_3_4)
             .build()
     }
 

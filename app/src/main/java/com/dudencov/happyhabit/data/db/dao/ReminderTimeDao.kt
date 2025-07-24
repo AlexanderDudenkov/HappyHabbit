@@ -24,4 +24,7 @@ interface ReminderTimeDao {
 
     @Query("UPDATE remindertime SET reminder_time = :reminderTime WHERE id = :id")
     suspend fun updateReminderTimeById(id: Int, reminderTime: LocalTime?)
+
+    @Query("UPDATE remindertime SET is_reminder_on = :isOn WHERE id = :id")
+    suspend fun updateIsReminderOnById(id: Int, isOn: Boolean)
 }

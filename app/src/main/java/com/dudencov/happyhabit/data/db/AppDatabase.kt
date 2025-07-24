@@ -13,7 +13,7 @@ import com.dudencov.happyhabit.data.db.entities.SelectedDateEntity
     entities = [HabitEntity::class,
         SelectedDateEntity::class,
         ReminderTimeEntity::class],
-    version = 3
+    version = 4
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

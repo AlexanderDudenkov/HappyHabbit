@@ -12,4 +12,6 @@ interface NotificationsRepository {
     suspend fun getReminder(id: Int): ReminderTime
 
     suspend fun updateReminderTimeById(id: Int, reminderTime: LocalTime?)
+
+    suspend fun updateIsReminderOnById(id: Int, value: Boolean)
 }

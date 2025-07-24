@@ -63,15 +63,9 @@ class HabitNotificationScheduler @Inject constructor(
         )
     }
 
-    fun cancelNotification(
-        reminderTime: LocalTime,
-        reminderId: Int,
-    ) {
+    fun cancelNotification(reminderTime: LocalTime, reminderId: Int) {
         alarmManager.cancel(
-            createPendingIntent(
-                reminderTime = reminderTime,
-                reminderId = reminderId
-            )
+            createPendingIntent(reminderTime = reminderTime, reminderId = reminderId)
         )
 
         Log.d("HabitNotificationScheduler", "Alarm canceled for habitId: $reminderId")
