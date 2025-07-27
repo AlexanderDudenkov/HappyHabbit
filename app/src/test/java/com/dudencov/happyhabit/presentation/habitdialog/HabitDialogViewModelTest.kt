@@ -81,6 +81,22 @@ class HabitDialogViewModelTest {
         }
 
     @Test
+    fun test_GIVEN_the_same_habit_id_WHEN_onSetHabitToTextField_THEN_state_is_updated_one_time() =
+        runTest {
+            // Given
+            val habitId = 1
+            val habit = Habit(id = habitId, name = "Exercise")
+            coEvery { repository.getHabit(habitId) } returns habit
+            viewModel.onIntent(HabitDialogIntent.OnSetHabitToTextField(habitId))
+
+            // When
+            viewModel.onIntent(HabitDialogIntent.OnSetHabitToTextField(habitId))
+
+            // Then
+            coVerify(exactly = 1) { repository.getHabit(habitId) }
+        }
+
+    @Test
     fun test_GIVEN_invalid_habit_id_WHEN_onSetHabitToTextField_THEN_state_unchanged() = runTest {
         // Given
         val habitId = 999

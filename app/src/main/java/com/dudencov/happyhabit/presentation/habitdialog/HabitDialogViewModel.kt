@@ -30,6 +30,7 @@ class HabitDialogViewModel @Inject constructor(
     val sideEffect: SharedFlow<HabitDialogSideEffect> = _sideEffect.asSharedFlow()
 
     private var initialHabitName = ""
+    private var currentHabitId = -1
 
     fun onIntent(intent: HabitDialogIntent) {
         when (intent) {
@@ -40,6 +41,9 @@ class HabitDialogViewModel @Inject constructor(
             }
 
             is HabitDialogIntent.OnSetHabitToTextField -> {
+                if (currentHabitId == intent.habitId) return
+                currentHabitId = intent.habitId
+
                 viewModelScope.launch {
                     val habit =
                         repository.getHabit(intent.habitId)?.toHabitUi() ?: return@launch
