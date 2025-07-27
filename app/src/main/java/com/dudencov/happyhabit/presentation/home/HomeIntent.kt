@@ -5,7 +5,7 @@ sealed interface HomeIntent {
     data object OnFabClicked : HomeIntent
     data object OnWeeklyProgressClicked : HomeIntent
     data object OnSettingsClicked : HomeIntent
-    data class OnHabitClicked(val id: Int) : HomeIntent
+    data class OnHabitClicked(val id: Int, val name: String) : HomeIntent
     data class OnHabitEditClicked(val currentHabitId: Int) : HomeIntent
     data class OnHabitDeleteClicked(val id: Int) : HomeIntent
     data class OnHabitItemMenuClicked(val habitId: Int, val isExpended: Boolean) : HomeIntent

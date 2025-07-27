@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -46,6 +48,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
@@ -94,7 +97,11 @@ private fun TopBar(
             modifier = Modifier.testTag(DetailTestTags.TOP_APP_BAR.tag),
             scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             title = {
-                Text(text = state.createTitle())
+                Text(
+                    text = state.habitName,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             navigationIcon = {
                 IconButton(onClick = { onIntent(DetailIntent.OnNavigateBack) }) {
@@ -118,6 +125,14 @@ fun CalendarGrid(
         modifier = modifier
             .pointerInput(Unit) { horizontalDragDetector(onIntent) }
     ) {
+        Spacer(Modifier.height(8.dp))
+        Text(
+            modifier = Modifier.padding(start = 16.dp),
+            text = state.createMonthYearTitle(),
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(Modifier.height(16.dp))
+
         Header()
 
         AnimatedContent(
@@ -268,5 +283,5 @@ private fun BottomDots(currentDate: KtLocalDate) {
 @PreviewScreenSizes
 @Composable
 fun CalendarScreenPreview() {
-    DetailScreen(DetailState(), {})
+    DetailScreen(DetailState(habitName = "hdhdhdh dhdjhdjdj snsjsjsj sjsjsjsjsjsjxj"), {})
 }

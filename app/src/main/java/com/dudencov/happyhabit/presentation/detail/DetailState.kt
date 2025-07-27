@@ -12,9 +12,10 @@ data class DetailState(
     val currentDate: KtLocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
     val selectedDates: Set<KtLocalDate> = emptySet(),
     val swipeDirection: SwipeDirection = SwipeDirection.NONE,
-    val calendarDataUi: CalendarDataUi = CalendarDataUi()
+    val calendarDataUi: CalendarDataUi = CalendarDataUi(),
+    val habitName: String = ""
 ) {
-    fun createTitle(): String {
+    fun createMonthYearTitle(): String {
         return "${
             currentDate.month.getDisplayName(
                 TextStyle.FULL_STANDALONE,

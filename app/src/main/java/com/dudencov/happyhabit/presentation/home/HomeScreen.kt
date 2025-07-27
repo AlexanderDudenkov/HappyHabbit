@@ -145,7 +145,7 @@ private fun HabitItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable { onIntent(OnHabitClicked(item.habit.id)) }
+            .clickable { onIntent(OnHabitClicked(id = item.habit.id, name = item.habit.name)) }
             .testTag(LIST_ITEM.tag),
     ) {
         Row(

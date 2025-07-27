@@ -96,6 +96,7 @@ class HomeViewModelTest {
     fun test_GIVEN_habit_id_WHEN_onHabitClicked_THEN_routes_to_details() = runTest {
         // Given
         val habitId = 1
+        val habitName = "test"
 
         // Then
         var act: HomeSideEffect? = null
@@ -104,10 +105,10 @@ class HomeViewModelTest {
         }
 
         // When
-        viewModel.onIntent(HomeIntent.OnHabitClicked(habitId))
+        viewModel.onIntent(HomeIntent.OnHabitClicked(id = habitId, name = habitName))
 
         // Then
-        val exp = HomeSideEffect.RouteToDetails(habitId)
+        val exp = HomeSideEffect.RouteToDetails(habitId = habitId, habitName = habitName)
         assertEquals(exp, act)
     }
 

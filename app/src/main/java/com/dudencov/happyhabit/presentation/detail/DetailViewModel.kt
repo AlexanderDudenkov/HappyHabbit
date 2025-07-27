@@ -33,10 +33,11 @@ class DetailViewModel @Inject constructor(
     fun onIntent(intent: DetailIntent) {
         viewModelScope.launch {
             when (intent) {
-                is DetailIntent.SetHabitId -> {
+                is DetailIntent.SetHabitNameAndId -> {
                     _state.update {
                         it.copy(
                             habitId = intent.id,
+                            habitName = intent.name,
                             selectedDates = repository.getHabitDates(habitId = intent.id),
                             calendarDataUi = calculateCalendarData(it.currentDate)
                         )

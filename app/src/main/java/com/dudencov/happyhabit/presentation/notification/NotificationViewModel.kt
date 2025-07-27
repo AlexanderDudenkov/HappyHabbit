@@ -2,10 +2,8 @@ package com.dudencov.happyhabit.presentation.notification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dudencov.happyhabit.data.notifications.HabitNotificationScheduler
 import com.dudencov.happyhabit.domain.data.NotificationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,14 +12,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
     private val repository: NotificationsRepository,
-    private val notificationScheduler: HabitNotificationScheduler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(NotificationState())
@@ -50,23 +46,14 @@ class NotificationViewModel @Inject constructor(
 
                     item?.let { item ->
                         if (intent.currentValue) {
-                            notificationScheduler.cancelNotification(
+                            repository.cancelAndOffNotification(
                                 reminderTime = item.reminderTime,
                                 reminderId = intent.habitId
                             )
                         } else {
-                            notificationScheduler.scheduleNotification(
+                            repository.scheduleNotification(
                                 reminderId = intent.habitId,
                                 reminderTime = item.reminderTime
-                            )
-                        }
-                    }
-
-                    withContext(Dispatchers.IO) {
-                        item?.id?.let {
-                            repository.updateIsReminderOnById(
-                                id = it,
-                                value = !intent.currentValue
                             )
                         }
                     }
@@ -113,6 +100,6 @@ class NotificationViewModel @Inject constructor(
             )
         }
 
-        notificationScheduler.scheduleNotification(reminderId = id, reminderTime = time)
+        repository.scheduleIfOnNotification(reminderId = id, reminderTime = time)
     }
 } 

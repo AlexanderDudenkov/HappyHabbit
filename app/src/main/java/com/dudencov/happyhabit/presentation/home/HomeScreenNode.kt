@@ -52,7 +52,12 @@ private fun HandleSideEffects(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is HomeSideEffect.RouteToDetails -> {
-                    navController.navigate(Routes.Detail.createRoute(effect.habitId))
+                    navController.navigate(
+                        Routes.Detail.createRoute(
+                            habitId = effect.habitId,
+                            habitName = effect.habitName
+                        )
+                    )
                 }
 
                 HomeSideEffect.RouteToWeeklyProgress -> {

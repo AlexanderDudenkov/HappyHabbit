@@ -4,6 +4,7 @@ import com.dudencov.happyhabit.data.HabitRepositoryImpl
 import com.dudencov.happyhabit.data.NotificationsRepositoryImpl
 import com.dudencov.happyhabit.data.db.dao.HabitDao
 import com.dudencov.happyhabit.data.db.dao.ReminderTimeDao
+import com.dudencov.happyhabit.data.notifications.HabitNotificationScheduler
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.data.NotificationsRepository
 import dagger.Module
@@ -24,7 +25,10 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNotificationsRepository(reminderTimeDao: ReminderTimeDao): NotificationsRepository {
-        return NotificationsRepositoryImpl(reminderTimeDao)
+    fun provideNotificationsRepository(
+        reminderTimeDao: ReminderTimeDao,
+        notificationScheduler: HabitNotificationScheduler
+    ): NotificationsRepository {
+        return NotificationsRepositoryImpl(reminderTimeDao, notificationScheduler)
     }
 }

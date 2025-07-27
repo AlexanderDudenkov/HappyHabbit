@@ -14,9 +14,11 @@ sealed class Routes {
     data object Detail : Routes() {
         private const val DESTINATION = "details"
         const val HABIT_ID_ARG: String = "habit_id"
-        const val ROUTE_PATTERN = "$DESTINATION?$HABIT_ID_ARG={$HABIT_ID_ARG}"
+        const val HABIT_NAME_ARG: String = "habit_name"
+        const val ROUTE_PATTERN = "$DESTINATION?$HABIT_ID_ARG={$HABIT_ID_ARG}&$HABIT_NAME_ARG={$HABIT_NAME_ARG}"
 
-        fun createRoute(habitId: Int) = "$DESTINATION?$HABIT_ID_ARG=$habitId"
+        fun createRoute(habitId: Int, habitName: String) =
+            "$DESTINATION?$HABIT_ID_ARG=$habitId&$HABIT_NAME_ARG=$habitName"
     }
 
     data object WeeklyProgress : Routes() {

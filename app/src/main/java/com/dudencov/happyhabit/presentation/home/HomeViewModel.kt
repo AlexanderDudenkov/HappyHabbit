@@ -45,7 +45,12 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeIntent.OnHabitClicked -> {
-                    _sideEffect.emit(HomeSideEffect.RouteToDetails(intent.id))
+                    _sideEffect.emit(
+                        HomeSideEffect.RouteToDetails(
+                            habitId = intent.id,
+                            habitName = intent.name
+                        )
+                    )
                 }
 
                 HomeIntent.OnFabClicked -> {

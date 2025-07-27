@@ -16,6 +16,9 @@ interface ReminderTimeDao {
     @Query("SELECT * FROM remindertime WHERE id = :id")
     suspend fun getReminder(id: Int): ReminderTimeEntity?
 
+    @Query("SELECT is_reminder_on FROM ReminderTime WHERE id = :id")
+    suspend fun getIsReminderOn(id: Int): Boolean?
+
     @Query("SELECT EXISTS(SELECT 1 FROM remindertime)")
     suspend fun isExist(): Boolean
 

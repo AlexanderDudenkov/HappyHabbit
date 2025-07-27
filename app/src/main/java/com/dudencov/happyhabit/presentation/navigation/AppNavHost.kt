@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.dialog
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dudencov.happyhabit.presentation.deleteconfirmationdialog.DeleteConfirmationDialogNode
 import com.dudencov.happyhabit.presentation.detail.DetailScreenNode
@@ -32,9 +31,13 @@ fun AppNavHost(navController: NavHostController) {
 
         animatedComposable(
             route = Routes.Detail.ROUTE_PATTERN,
-            arguments = listOf(navArgument(Routes.Detail.HABIT_ID_ARG) {
-                type = NavType.StringType
-            })
+            arguments = listOf(
+                navArgument(Routes.Detail.HABIT_ID_ARG) {
+                    type = NavType.StringType
+                },
+                navArgument(Routes.Detail.HABIT_NAME_ARG) {
+                    type = NavType.StringType
+                })
         ) {
             DetailScreenNode(navController)
         }
