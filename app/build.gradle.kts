@@ -26,8 +26,8 @@ android {
         applicationId = "com.dudencov.happyhabit"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.0-beta2"
+        versionCode = 3
+        versionName = "1.0.0-beta3"
 
         testInstrumentationRunner = "com.dudencov.happyhabit.HiltTestRunner"
         vectorDrawables { useSupportLibrary = true }
