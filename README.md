@@ -6,7 +6,6 @@
 ### 4. Kotlin Coroutines.
 ### 5. Hilt.
 ### 6. Room DB.
-### 7. WorkManager.
-### 8. Navigation Component.
-### 9. Mockk.
-### 10. Cursor IDE.
+### 7. Navigation Component.
+### 8. Mockk.
+### 9. Cursor IDE.
