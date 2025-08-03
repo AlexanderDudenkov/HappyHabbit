@@ -46,15 +46,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        if (Build.TYPE=="debug") {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                StrictMode.setVmPolicy(
-                    StrictMode.VmPolicy.Builder()
-                        .detectUnsafeIntentLaunch()
-                        .build()
-                )
-            }
-        }
+        checkUnsafeIntents()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -68,6 +60,18 @@ class MainActivity : ComponentActivity() {
             navController?.apply {
                 popBackStack(graph.startDestinationId, false)
                 navigate(Routes.Home.ROUTE_PATTERN)
+            }
+        }
+    }
+
+    private fun checkUnsafeIntents() {
+        if (Build.TYPE == "debug") {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                StrictMode.setVmPolicy(
+                    StrictMode.VmPolicy.Builder()
+                        .detectUnsafeIntentLaunch()
+                        .build()
+                )
             }
         }
     }
