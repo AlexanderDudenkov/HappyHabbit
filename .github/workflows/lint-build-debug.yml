@@ -53,3 +53,29 @@ jobs:
         with:
           name: lint-report
           path: app/build/reports/lint-results-debug.html
+
+      - name: Get version name from Gradle
+        id: version
+        run: |
+          VERSION_NAME=$(./gradlew -q :app:printVersionName)
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+
+      - name: Get project name
+        id: project_name
+        run: |
+          PROJECT_NAME=$(grep 'rootProject.name' settings.gradle.kts | cut -d '=' -f2 | tr -d '" ')
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+
+      - name: Rename APK
+        run: |
+          mkdir output_apk
+          cp app/build/outputs/apk/${{ env.BUILD_TYPE }}/app-${{ env.BUILD_TYPE }}.apk \
+             output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk
+
+      - name: Send APK to Telegram
+        run: |
+          curl -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+               -F document=@output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk \
+               -F caption="📦 *${{ env.PROJECT_NAME }}*\n🛠 Build: `${{ env.BUILD_TYPE }}`\n🔖 Version: `${{ env.VERSION_NAME }}`" \
+               -F parse_mode=Markdown \
+               https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument

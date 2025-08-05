@@ -138,3 +138,9 @@ dependencies {
 }
 
 kapt { correctErrorTypes = true }
+
+tasks.register("printVersionName") {
+    doLast {
+        println(android.defaultConfig.versionName)
+    }
+}
