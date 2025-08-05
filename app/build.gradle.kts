@@ -9,12 +9,13 @@ plugins {
     id("kotlin-parcelize")
 }
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties().apply {
-    if (keystorePropertiesFile.exists()) {
-        load(FileInputStream(keystorePropertiesFile))
+val keystoreProperties: Properties by lazy {
+    val file = rootProject.file("keystore.properties")
+    if (file.exists()) {
+        Properties().apply { load(FileInputStream(file)) }
     } else {
-        throw GradleException("Keystore properties file not found at ${keystorePropertiesFile.absolutePath}")
+        println("⚠️ Warning: keystore.properties not found. Skipping release signing.")
+        Properties()
     }
 }
 
@@ -34,12 +35,15 @@ android {
     }
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties.getProperty("keyAlias")
-            keyPassword = keystoreProperties.getProperty("keyPassword")
-            val rawStoreFilePath = keystoreProperties.getProperty("storeFile")
-            val storeFilePath = rawStoreFilePath.replace("\"", "")
-            storeFile = File(storeFilePath)
-            storePassword = keystoreProperties.getProperty("storePassword")
+            val hasKeys = keystoreProperties.isNotEmpty()
+            if (hasKeys) {
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                val rawStoreFilePath = keystoreProperties.getProperty("storeFile")
+                val storeFilePath = rawStoreFilePath.replace("\"", "")
+                storeFile = File(storeFilePath)
+                storePassword = keystoreProperties.getProperty("storePassword")
+            }
         }
     }
     buildTypes {
