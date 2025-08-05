@@ -80,9 +80,8 @@ jobs:
 
       - name: Rename APK
         run: |
-          mkdir output_apk
-          cp app/build/outputs/apk/${{ env.BUILD_TYPE }}/app-${{ env.BUILD_TYPE }}.apk \
-             output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk
+          mkdir -p output_apk
+          cp app/build/outputs/apk/release/app-release.apk output_apk/${PROJECT_NAME}-v${VERSION_NAME}-release.apk
 
       - name: Send APK to Telegram
         run: |

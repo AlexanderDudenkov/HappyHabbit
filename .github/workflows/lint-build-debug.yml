@@ -65,17 +65,16 @@ jobs:
         run: |
           PROJECT_NAME=$(grep 'rootProject.name' settings.gradle.kts | cut -d '=' -f2 | tr -d '" ')
           echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
-
+          
       - name: Rename APK
         run: |
-          mkdir output_apk
-          cp app/build/outputs/apk/${{ env.BUILD_TYPE }}/app-${{ env.BUILD_TYPE }}.apk \
-             output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk
+         mkdir -p output_apk
+         cp app/build/outputs/apk/debug/app-debug.apk output_apk/${PROJECT_NAME}-v${VERSION_NAME}-debug.apk
 
       - name: Send APK to Telegram
         run: |
-          curl -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-               -F document=@output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk \
-               -F caption="📦 *${{ env.PROJECT_NAME }}*\n🛠 Build: `${{ env.BUILD_TYPE }}`\n🔖 Version: `${{ env.VERSION_NAME }}`" \
-               -F parse_mode=Markdown \
-               https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument
+         curl -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+             -F document=@output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk \
+             -F caption="📦 *${{ env.PROJECT_NAME }}*\n🛠 Build: `${{ env.BUILD_TYPE }}`\n🔖 Version: `${{ env.VERSION_NAME }}`" \
+             -F parse_mode=Markdown \
+             https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument
