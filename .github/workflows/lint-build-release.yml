@@ -86,7 +86,7 @@ jobs:
       - name: Send APK to Telegram
         run: |
           curl -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-               -F document=@output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-${{ env.BUILD_TYPE }}.apk \
-               -F caption="📦 *${{ env.PROJECT_NAME }}*\n🛠 Build: `${{ env.BUILD_TYPE }}`\n🔖 Version: `${{ env.VERSION_NAME }}`" \
+               -F document=@output_apk/${{ env.PROJECT_NAME }}-v${{ env.VERSION_NAME }}-release.apk \
+               -F caption="📦 *${{ env.PROJECT_NAME }}*\n🛠 Build: `release`\n🔖 Version: `${{ env.VERSION_NAME }}`" \
                -F parse_mode=Markdown \
                https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument
