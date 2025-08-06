@@ -35,7 +35,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest jacocoTestReport
 
       - name: Upload test results (optional)
         if: always()
@@ -48,7 +48,7 @@ jobs:
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v5.0
         with:
-          coverage_results_path: build/reports/jacoco/test/jacocoTestReport.xml
+          coverage_results_path: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
           coverage_report_title: JaCoCo Coverage
           minimum_coverage: 80
           fail_below_threshold: false
