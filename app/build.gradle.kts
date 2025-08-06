@@ -7,6 +7,7 @@ plugins {
     kotlin("kapt") version libs.versions.kotlin
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    id("jacoco")
 }
 
 val keystoreProperties: Properties by lazy {
