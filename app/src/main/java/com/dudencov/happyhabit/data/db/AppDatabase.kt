@@ -1,5 +1,6 @@
 package com.dudencov.happyhabit.data.db
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -10,10 +11,16 @@ import com.dudencov.happyhabit.data.db.entities.ReminderTimeEntity
 import com.dudencov.happyhabit.data.db.entities.SelectedDateEntity
 
 @Database(
+    version = 4,
     entities = [HabitEntity::class,
         SelectedDateEntity::class,
         ReminderTimeEntity::class],
-    version = 4
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(1, 2),
+        AutoMigration(2, 3),
+        AutoMigration(from = 3, to = 4)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

@@ -1,8 +1,8 @@
 [versions]
 agp = "8.5.2"
 coreTesting = "2.2.0"
-kotlin = "1.9.0"
-hilt = "2.51.1"
+kotlin = "2.1.10"
+hilt = "2.57"
 kotlinxCoroutinesTest = "1.7.3"
 kotlinxDatetime = "0.6.0"
 navigation = "2.8.7"
@@ -16,7 +16,7 @@ activityCompose = "1.10.0"
 composeBom = "2025.01.01"
 material3Android = "1.3.1"
 composeFoundation = "1.7.8"
-room = "2.6.1"
+room = "2.7.2"
 uiTextGoogleFonts = "1.7.8"
 mockk = "1.13.8"
 
@@ -58,8 +58,11 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-room-testing-android = { group = "androidx.room", name = "room-testing-android", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+androidx-room = { id = "androidx.room", version.ref = "room" }

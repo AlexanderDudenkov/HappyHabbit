@@ -4,4 +4,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     kotlin("kapt") version libs.versions.kotlin
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.androidx.room) apply false
 }

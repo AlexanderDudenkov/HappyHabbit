@@ -8,6 +8,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
     id("jacoco")
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidx.room)
 }
 
 val keystoreProperties: Properties by lazy {
@@ -82,18 +84,17 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-}
-
-kapt {
-    arguments {arg("room.schemaLocation", "$projectDir/schemas")}
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -135,6 +136,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation (libs.androidx.room.testing.android)
     kaptAndroidTest(libs.hilt.android.compiler)
 }
 
