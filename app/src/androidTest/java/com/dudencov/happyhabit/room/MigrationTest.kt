@@ -106,7 +106,7 @@ class MigrationTest {
         val cursor = db.query("SELECT id, name, reminder_time, is_reminder_on FROM ReminderTime")
         assertTrue(cursor.moveToFirst())
         assertEquals("09:00:00", cursor.getString(cursor.getColumnIndexOrThrow("reminder_time")))
-        assertEquals(0, cursor.getInt(cursor.getColumnIndexOrThrow("is_reminder_on")))
+        assertEquals(1, cursor.getInt(cursor.getColumnIndexOrThrow("is_reminder_on")))
         cursor.close()
         db.close()
     }
@@ -134,7 +134,7 @@ class MigrationTest {
                 reminderCursor.getString(reminderCursor.getColumnIndexOrThrow("reminder_time"))
             )
             assertEquals(
-                0,
+                1,
                 reminderCursor.getInt(reminderCursor.getColumnIndexOrThrow("is_reminder_on"))
             )
         }

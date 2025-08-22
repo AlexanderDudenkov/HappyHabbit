@@ -20,7 +20,7 @@ object DatabaseMigrations {
             INSERT INTO ReminderTime_new (id, name, reminder_time, is_reminder_on)
             SELECT id, name, 
                    COALESCE(reminder_time, '09:00:00'), 
-                   0
+                   1
             FROM ReminderTime
         """)
 
