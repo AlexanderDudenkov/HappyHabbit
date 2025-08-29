@@ -11,10 +11,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.dudencov.happyhabit.data.notifications.NotificationPermissionHelper
+import com.dudencov.happyhabit.presentation.notification.core.NotificationPermissionHelper
+import com.dudencov.happyhabit.core.ui.theme.HappyHabitTheme
+import com.dudencov.happyhabit.core.navigation.Routes
 import com.dudencov.happyhabit.presentation.navigation.AppNavHost
-import com.dudencov.happyhabit.presentation.navigation.Routes
-import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

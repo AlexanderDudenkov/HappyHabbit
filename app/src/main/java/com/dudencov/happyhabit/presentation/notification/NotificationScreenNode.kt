@@ -7,15 +7,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 
 @Composable
-fun NotificationScreenNode(navController: NavHostController) {
-    val viewModel: NotificationViewModel = hiltViewModel()
+fun NotificationScreenNode(navController: NavHostController, viewModel: NotificationViewModel) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 

@@ -5,13 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.dudencov.happyhabit.presentation.navigation.Routes
+import com.dudencov.happyhabit.core.navigation.Routes
 
 @Composable
-fun SettingsScreenNode(navController: NavHostController) {
-    val viewModel: SettingsViewModel = hiltViewModel()
+fun SettingsScreenNode(navController: NavHostController, viewModel: SettingsViewModel) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 

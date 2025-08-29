@@ -5,15 +5,13 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 
 @Composable
-fun WeeklyProgressScreenNode(navController: NavHostController) {
-    val viewModel: WeeklyProgressViewModel = hiltViewModel()
+fun WeeklyProgressScreenNode(navController: NavHostController, viewModel: WeeklyProgressViewModel) {
     val state by viewModel.state.collectAsState()
 
     HandleLifecycle(viewModel)

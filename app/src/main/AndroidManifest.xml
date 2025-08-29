@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".data.notifications.DailyReminderReceiver" />
+        <receiver android:name=".presentation.notification.core.DailyReminderReceiver" />
 
     </application>
 

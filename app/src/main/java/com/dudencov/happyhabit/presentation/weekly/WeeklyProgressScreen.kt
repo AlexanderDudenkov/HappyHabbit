@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
+import com.dudencov.happyhabit.core.ui.theme.HappyHabitTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

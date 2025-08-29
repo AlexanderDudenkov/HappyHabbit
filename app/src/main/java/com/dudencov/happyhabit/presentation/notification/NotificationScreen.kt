@@ -45,8 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
+import com.dudencov.happyhabit.core.ui.theme.HappyHabitTheme
 import com.dudencov.happyhabit.presentation.notification.NotificationIntent.OnSwitchItem
-import com.dudencov.happyhabit.presentation.theme.HappyHabitTheme
 import kotlinx.datetime.LocalTime
 import java.util.Locale
 

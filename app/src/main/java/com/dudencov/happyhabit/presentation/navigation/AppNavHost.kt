@@ -1,6 +1,8 @@
 package com.dudencov.happyhabit.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,7 +11,8 @@ import androidx.navigation.navArgument
 import com.dudencov.happyhabit.presentation.deleteconfirmationdialog.DeleteConfirmationDialogNode
 import com.dudencov.happyhabit.presentation.detail.DetailScreenNode
 import com.dudencov.happyhabit.presentation.habitdialog.HabitDialogNode
-import com.dudencov.happyhabit.presentation.home.HomeScreenNode
+import com.dudencov.happyhabit.feature.home.HomeScreenNode
+import com.dudencov.happyhabit.core.navigation.Routes
 import com.dudencov.happyhabit.presentation.notification.NotificationScreenNode
 import com.dudencov.happyhabit.presentation.settings.SettingsScreenNode
 import com.dudencov.happyhabit.presentation.utils.animatedComposable
@@ -17,6 +20,7 @@ import com.dudencov.happyhabit.presentation.weekly.WeeklyProgressScreenNode
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
+    val navigator = remember { NavigatorImpl(navController) }
 
     NavHost(navController = navController, startDestination = Routes.Home.ROUTE_PATTERN) {
         animatedComposable(
@@ -26,7 +30,7 @@ fun AppNavHost(navController: NavHostController) {
                 nullable = true
             })
         ) {
-            HomeScreenNode(navController)
+            HomeScreenNode(navigator, hiltViewModel())
         }
 
         animatedComposable(
@@ -39,19 +43,19 @@ fun AppNavHost(navController: NavHostController) {
                     type = NavType.StringType
                 })
         ) {
-            DetailScreenNode(navController)
+            DetailScreenNode(navController, hiltViewModel())
         }
 
         animatedComposable(Routes.WeeklyProgress.ROUTE_PATTERN) {
-            WeeklyProgressScreenNode(navController)
+            WeeklyProgressScreenNode(navController, hiltViewModel())
         }
 
         animatedComposable(Routes.Notification.ROUTE_PATTERN) {
-            NotificationScreenNode(navController)
+            NotificationScreenNode(navController, hiltViewModel())
         }
 
         animatedComposable(Routes.Settings.ROUTE_PATTERN) {
-            SettingsScreenNode(navController)
+            SettingsScreenNode(navController, hiltViewModel())
         }
 
         dialog(
@@ -62,7 +66,7 @@ fun AppNavHost(navController: NavHostController) {
                     nullable = true
                 }
             )) {
-            HabitDialogNode(navController)
+            HabitDialogNode(navController, hiltViewModel())
         }
 
         dialog(
@@ -72,7 +76,7 @@ fun AppNavHost(navController: NavHostController) {
                     type = NavType.StringType
                 }
             )) {
-            DeleteConfirmationDialogNode(navController)
+            DeleteConfirmationDialogNode(navController, hiltViewModel())
         }
     }
 }

@@ -4,13 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.dudencov.happyhabit.presentation.navigation.Routes
+import com.dudencov.happyhabit.core.navigation.Routes
 
 @Composable
-fun DetailScreenNode(navController: NavHostController) {
-    val viewModel: DetailViewModel = hiltViewModel()
+fun DetailScreenNode(navController: NavHostController, viewModel: DetailViewModel) {
     val state by viewModel.state.collectAsState()
 
     HandleArgs(navController, viewModel)

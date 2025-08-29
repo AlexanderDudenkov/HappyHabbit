@@ -52,7 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.R
-import com.dudencov.happyhabit.presentation.utils.isCurrentDay
+import com.dudencov.happyhabit.data.utils.isCurrentDay
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.plus
 import kotlinx.datetime.LocalDate as KtLocalDate

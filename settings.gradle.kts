@@ -21,4 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "HappyHabit"
 include(":app")
- 
+include(":feature:home")
+include(":feature:settings")
+include(":core:ui")
+include(":domain")
+include(":data")
+include(":core:di")
+include(":core:navigation")

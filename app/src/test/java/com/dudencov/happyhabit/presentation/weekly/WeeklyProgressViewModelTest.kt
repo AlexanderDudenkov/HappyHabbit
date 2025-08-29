@@ -1,6 +1,7 @@
 package com.dudencov.happyhabit.presentation.weekly
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.dudencov.happyhabit.data.utils.getCurrentWeek
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
 import io.mockk.coEvery
@@ -19,7 +20,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.Clock
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import org.junit.After
@@ -49,15 +49,15 @@ class WeeklyProgressViewModelTest {
         mockkStatic("kotlinx.datetime.ClockKt")
         every { Clock.System.todayIn(TimeZone.currentSystemDefault()) } returns fixedDate
         // Mock getCurrentWeek() - adjust file name if different
-        mockkStatic("com.dudencov.happyhabit.presentation.utils.LocalDateUtilsKt")
-        every { com.dudencov.happyhabit.presentation.utils.getCurrentWeek() } returns currentWeek
+        mockkStatic("com.dudencov.happyhabit.data.utils.LocalDateUtilsKt")
+        every { getCurrentWeek() } returns currentWeek
         viewModel = WeeklyProgressViewModel(repository)
     }
 
     @After
     fun tearDown() {
         unmockkStatic("kotlinx.datetime.ClockKt")
-        unmockkStatic("com.dudencov.happyhabit.presentation.utils.LocalDateUtilsKt")
+        unmockkStatic("com.dudencov.happyhabit.data.utils.LocalDateUtilsKt")
         Dispatchers.resetMain()
     }
 

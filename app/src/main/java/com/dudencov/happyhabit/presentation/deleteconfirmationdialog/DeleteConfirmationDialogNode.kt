@@ -2,14 +2,14 @@ package com.dudencov.happyhabit.presentation.deleteconfirmationdialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.dudencov.happyhabit.presentation.navigation.Routes
+import com.dudencov.happyhabit.core.navigation.Routes
 
 @Composable
-fun DeleteConfirmationDialogNode(navController: NavHostController) {
-    val viewModel: DeleteConfirmationDialogViewModel = hiltViewModel()
-
+fun DeleteConfirmationDialogNode(
+    navController: NavHostController,
+    viewModel: DeleteConfirmationDialogViewModel
+) {
     HandleArgs(navController, viewModel)
     HandleSideEffects(viewModel, navController)
 

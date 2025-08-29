@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
-import com.dudencov.happyhabit.presentation.entities.toHabitUi
+import com.dudencov.happyhabit.core.ui.entities.toHabitUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

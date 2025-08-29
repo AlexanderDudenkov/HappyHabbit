@@ -5,7 +5,7 @@ import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
 import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
-import com.dudencov.happyhabit.presentation.entities.HabitUi
+import com.dudencov.happyhabit.core.ui.entities.HabitUi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

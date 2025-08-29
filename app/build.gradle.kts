@@ -4,12 +4,11 @@ import java.io.FileInputStream
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt") version libs.versions.kotlin
-    id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
     id("jacoco")
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.androidx.room)
+    kotlin("kapt") version libs.versions.kotlin
+    alias(libs.plugins.hilt)
 }
 
 val keystoreProperties: Properties by lazy {
@@ -89,41 +88,28 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
-    sourceSets {
-        getByName("androidTest").assets.srcDir("$projectDir/schemas")
-    }
 }
 
 dependencies {
+    implementation(project(":core:di"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:ui"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":feature:home"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3.android)
+    //implementation(libs.androidx.material3.android)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.kotlinx.datetime)
-
-    // DI – Hilt
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
-
-    // Navigation
-    implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation.compose)
-
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.androidx.room.common)
-    kapt(libs.room.compiler)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
