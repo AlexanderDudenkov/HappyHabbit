@@ -44,7 +44,7 @@ internal class HomeScreenTest : BaseTest() {
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
 
             onNodeWithTag(HomeTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.app_name)
+                string(UiR.string.app_name)
             )
             onNodeWithTag(HomeTestTags.WEEKLY_BTN.tag).assertIsDisplayed()
         }
@@ -55,7 +55,7 @@ internal class HomeScreenTest : BaseTest() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
@@ -65,7 +65,7 @@ internal class HomeScreenTest : BaseTest() {
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
 
             onNodeWithTag(HomeTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.app_name)
+                string(UiR.string.app_name)
             )
         }
     }
@@ -77,7 +77,7 @@ internal class HomeScreenTest : BaseTest() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
@@ -92,13 +92,13 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_delete_title)
+                string(UiR.string.context_menu_delete_title)
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_edit_title)
+                string(UiR.string.context_menu_edit_title)
             ).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_edit_habit_title)
+                string(UiR.string.habit_dialog_edit_habit_title)
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
@@ -121,7 +121,7 @@ internal class HomeScreenTest : BaseTest() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
@@ -131,13 +131,13 @@ internal class HomeScreenTest : BaseTest() {
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_delete_title)
+                string(UiR.string.context_menu_delete_title)
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_edit_title)
+                string(UiR.string.context_menu_edit_title)
             ).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_edit_habit_title)
+                string(UiR.string.habit_dialog_edit_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("1").performTextInput("1")
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
@@ -152,7 +152,7 @@ internal class HomeScreenTest : BaseTest() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
@@ -162,13 +162,13 @@ internal class HomeScreenTest : BaseTest() {
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_delete_title)
+                string(UiR.string.context_menu_delete_title)
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_edit_title)
+                string(UiR.string.context_menu_edit_title)
             ).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_edit_habit_title)
+                string(UiR.string.habit_dialog_edit_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("1").performTextInput("1")
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
@@ -187,7 +187,7 @@ internal class HomeScreenTest : BaseTest() {
             //creating
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
@@ -204,13 +204,13 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_delete_title)
+                string(UiR.string.context_menu_delete_title)
             )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_edit_title)
+                string(UiR.string.context_menu_edit_title)
             ).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_edit_habit_title)
+                string(UiR.string.habit_dialog_edit_habit_title)
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
@@ -242,7 +242,7 @@ internal class HomeScreenTest : BaseTest() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
             onNodeWithTag(DialogTestTags.TITLE.tag).assertTextEquals(
-                string(AppR.string.habit_dialog_create_habit_title)
+                string(UiR.string.habit_dialog_create_habit_title)
             )
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
@@ -251,11 +251,11 @@ internal class HomeScreenTest : BaseTest() {
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_edit_title)
+                string(UiR.string.context_menu_edit_title)
             )
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
-                string(AppR.string.context_menu_delete_title)
+                string(UiR.string.context_menu_delete_title)
             ).performClick()
             onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertDoesNotExist()
         }

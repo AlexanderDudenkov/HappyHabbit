@@ -1,7 +1,7 @@
 package com.dudencov.happyhabit.habitdialog
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.dudencov.happyhabit.R
+import com.dudencov.happyhabit.core.ui.R as UiR
 import com.dudencov.happyhabit.domain.data.HabitRepository
 import com.dudencov.happyhabit.domain.entities.Habit
 import com.dudencov.happyhabit.domain.usecases.HabitValidationUseCase
@@ -206,7 +206,7 @@ class HabitDialogViewModelTest {
         
         val exp = HabitDialogState(
             habitUi = HabitUi(name = "Run"),
-            errorResId = R.string.habit_dialog_error_duplicate_name
+            errorResId = UiR.string.habit_dialog_error_duplicate_name
         )
         val act = viewModel.state.first()
         assertEquals(exp, act)

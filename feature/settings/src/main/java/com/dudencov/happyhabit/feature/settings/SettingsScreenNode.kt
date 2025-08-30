@@ -10,7 +10,6 @@ import com.dudencov.happyhabit.core.navigation.Routes
 @Composable
 fun SettingsScreenNode(navigator: Navigator, viewModel: SettingsViewModel) {
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
 
     HandleSideEffects(viewModel, navigator)
 
