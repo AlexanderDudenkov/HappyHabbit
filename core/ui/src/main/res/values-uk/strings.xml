@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_settings_title">Сповіщення</string>
+    <string name="settings_title">Налаштування</string>
+    <string name="button_back.content_desk">Назад</string>
+
+    <string name="habit_dialog.cancel_btn.title">Скасувати</string>
+
+    <string name="weekly_progress.content_desc">Прогрес за тиждень</string>
+    <string name="fab.add.content_desc">Натисни, щоб відкрити діалог створення звички</string>
+    <string name="context_menu.content_desc">Натисни, щоб відкрити контекстне меню</string>
+    <string name="context_menu_edit.title">Змінити</string>
+    <string name="context_menu_delete.title">Видалити</string>
+    <string name="habit_dialog.create_habit.title">Створити звичку</string>
+    <string name="habit_dialog.edit_habit.title">Змінити звичку</string>
+    <string name="habit_dialog.text_field.placeholder">Введи текст</string>
+    <string name="habit_dialog.save_btn.title">Зберегти</string>
+    <string name="habit_dialog.error.duplicate_name">Звичка з такою назвою вже існує!</string>
+    <string name="weekly.appbar.title">Прогрес за тиждень</string>
+
+    <string name="delete_confirmation_dialog.title">Видалити звичку</string>
+    <string name="delete_confirmation_dialog.message">Ви впевнені, що хочете видалити цю звичку?</string>
+    <string name="delete_confirmation_dialog.confirm">Видалити</string>
+    <string name="delete_confirmation_dialog.cancel">Скасувати</string>
+
+    <string name="reminder_time_content_desc">Час нагадування</string>
+    <string name="no_reminder_set">Нагадування не встановлено</string>
+    <string name="select_reminder_time">Виберіть час нагадування</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="notification_settings_reminder">Нагадування відмітити виконані звички</string>
+
+    <string name="notification_channel_name">Нагадування про звички</string>
+    <string name="notification_channel_description">Сповіщення для ваших щоденних звичок</string>
+    <string name="habit_reminder_title">Час для вашої звички!</string>
+    <string name="habit_reminder_text">Не забудьте відмітити ваші звички</string>
+</resources>

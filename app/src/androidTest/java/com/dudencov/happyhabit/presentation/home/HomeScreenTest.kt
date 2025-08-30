@@ -16,11 +16,11 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dudencov.happyhabit.base.BaseTest
+import com.dudencov.happyhabit.feature.detail.DetailTestTags
 import com.dudencov.happyhabit.feature.home.HomeTestTags
-import com.dudencov.happyhabit.R as AppR
-import com.dudencov.happyhabit.presentation.detail.DetailTestTags
-import com.dudencov.happyhabit.presentation.habitdialog.DialogTestTags
-import com.dudencov.happyhabit.presentation.weekly.WeeklyTestTags
+import com.dudencov.happyhabit.core.ui.R as UiR
+import com.dudencov.happyhabit.feature.habitdialog.DialogTestTags
+import com.dudencov.happyhabit.feature.weekly.WeeklyTestTags
 import com.dudencov.happyhabit.utils.string
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test

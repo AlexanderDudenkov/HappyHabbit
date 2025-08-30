@@ -18,11 +18,17 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/deleteconfirmationdialog" />
+            <option value="$PROJECT_DIR$/feature/detail" />
+            <option value="$PROJECT_DIR$/feature/habitdialog" />
             <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/notification" />
             <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/weekly" />
           </set>
         </option>
       </GradleProjectSettings>
     </option>
+    <option name="parallelModelFetch" value="true" />
   </component>
 </project>

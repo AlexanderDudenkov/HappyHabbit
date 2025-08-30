@@ -1,7 +1,7 @@
 package com.dudencov.happyhabit.base
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.dudencov.happyhabit.presentation.MainActivity
+import com.dudencov.happyhabit.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import org.junit.Before
 import org.junit.Rule

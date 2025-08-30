@@ -97,6 +97,12 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:habitdialog"))
+    implementation(project(":feature:deleteconfirmationdialog"))
+    implementation(project(":feature:weekly"))
+    implementation(project(":feature:notification"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -122,7 +128,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation (libs.androidx.room.testing.android)
+    androidTestImplementation(libs.androidx.room.testing.android)
     kaptAndroidTest(libs.hilt.android.compiler)
 }
 

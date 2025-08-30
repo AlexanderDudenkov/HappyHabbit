@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.dudencov.happyhabit.core.ui.entities.HabitUi
 import com.dudencov.happyhabit.core.ui.theme.HappyHabitTheme
+import com.dudencov.happyhabit.core.ui.R as UiR
 
 @Composable
 fun HomeScreen(
@@ -69,7 +70,7 @@ private fun BottomBar(
                 }) {
                 Icon(
                     imageVector = Icons.Default.DateRange,
-                    contentDescription = stringResource(R.string.weekly_progress_content_desc)
+                    contentDescription = stringResource(UiR.string.weekly_progress_content_desc)
                 )
             }
             IconButton(
@@ -79,7 +80,7 @@ private fun BottomBar(
                 }) {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.settings_title)
+                    contentDescription = stringResource(UiR.string.settings_title)
                 )
             }
         },
@@ -98,7 +99,7 @@ private fun Fab(
         }) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = stringResource(R.string.fab_add_content_desc)
+            contentDescription = stringResource(UiR.string.fab_add_content_desc)
         )
     }
 }
@@ -181,7 +182,7 @@ private fun HabitItemMenu(
             }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = context.getString(R.string.context_menu_content_desc)
+                contentDescription = context.getString(UiR.string.context_menu_content_desc)
             )
         }
 
@@ -193,14 +194,14 @@ private fun HabitItemMenu(
                 .testTag(HomeTestTags.LIST_DROPDOWN_MENU.tag)
         ) {
             DropdownMenuItem(
-                text = { Text(context.getString(R.string.context_menu_edit_title)) },
+                text = { Text(context.getString(UiR.string.context_menu_edit_title)) },
                 onClick = {
                     onIntent(HomeIntent.OnHabitEditClicked(item.habit.id))
                 },
                 modifier = Modifier.testTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag),
             )
             DropdownMenuItem(
-                text = { Text(context.getString(R.string.context_menu_delete_title)) },
+                text = { Text(context.getString(UiR.string.context_menu_delete_title)) },
                 onClick = {
                     onIntent(HomeIntent.OnHabitDeleteClicked(item.habit.id))
                 },

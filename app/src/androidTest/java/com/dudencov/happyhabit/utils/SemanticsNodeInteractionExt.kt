@@ -5,7 +5,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.dudencov.happyhabit.presentation.MainActivity
+import com.dudencov.happyhabit.MainActivity
 
 fun SemanticsNodeInteraction.assertTextEquals(
     rule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>,

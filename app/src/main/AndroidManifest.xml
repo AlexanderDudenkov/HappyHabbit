@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
-        android:name="com.dudencov.happyhabit.presentation.App"
+        android:name="com.dudencov.happyhabit.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.HappyHabit">
             <intent-filter>
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".presentation.notification.core.DailyReminderReceiver" />
+        <receiver android:name=".notification.DailyReminderReceiver" />
 
     </application>
 
