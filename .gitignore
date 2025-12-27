@@ -13,7 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
-keystore.properties
+keystore/keystore.properties
+keystore/*.jks
 
 # Ignore Room schema files
 appschemas/
