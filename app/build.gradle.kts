@@ -52,9 +52,6 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
             applicationIdSuffix = ".release"
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
         }
         debug {
             isDebuggable = true
@@ -67,9 +64,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
         }
     }
 
