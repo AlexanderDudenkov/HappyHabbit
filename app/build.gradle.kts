@@ -4,6 +4,7 @@ import java.io.FileInputStream
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     kotlin("kapt") version libs.versions.kotlin
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
@@ -71,8 +72,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17" //downgrade from 21 to 17 for backward compatibility with KAPT
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) //downgrade from 21 to 17 for backward compatibility with KAPT
+        }
     }
     buildFeatures {
         compose = true
@@ -100,6 +103,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
     implementation(libs.androidx.ui.text.google.fonts)

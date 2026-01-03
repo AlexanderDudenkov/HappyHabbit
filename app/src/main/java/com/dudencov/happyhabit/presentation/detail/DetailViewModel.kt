@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toJavaLocalDate
@@ -83,7 +84,7 @@ class DetailViewModel @Inject constructor(
     private fun calculateCalendarData(targetDate: KtLocalDate): CalendarDataUi {
         val targetFirstDay = KtLocalDate(targetDate.year, targetDate.month, 1)
         val targetDaysInMonth = targetDate.toJavaLocalDate().lengthOfMonth()
-        val targetFirstDayOfWeek = targetFirstDay.dayOfWeek.value
+        val targetFirstDayOfWeek = targetFirstDay.dayOfWeek.isoDayNumber
         val offset = targetFirstDayOfWeek - 1
         return CalendarDataUi(targetFirstDay, targetDaysInMonth, targetFirstDayOfWeek, offset)
     }

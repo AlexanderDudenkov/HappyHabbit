@@ -262,7 +262,7 @@ private fun BottomDots(currentDate: KtLocalDate) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(12) { index ->
-            val isActive = currentDate.month.value - 1 == index
+            val isActive = currentDate.month.ordinal == index
             val dotColor by animateColorAsState(
                 targetValue = if (isActive) {
                     MaterialTheme.colorScheme.primary
