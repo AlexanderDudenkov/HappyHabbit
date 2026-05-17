@@ -1,5 +1,8 @@
 package com.dudencov.happyhabit.presentation.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -14,7 +17,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.core.content.ContextCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.dudencov.happyhabit.R
 import com.dudencov.happyhabit.base.BaseTest
 import com.dudencov.happyhabit.presentation.detail.DetailTestTags
@@ -31,18 +36,31 @@ import org.junit.runner.RunWith
 internal class HomeScreenTest : BaseTest() {
 
     @Test
+    fun testNotificationPermissionIsGranted() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return
+        }
+
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val hasPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+
+        assert(hasPermission) { "Notification permission should be granted by GrantPermissionRule" }
+    }
+
+    @Test
     fun testNavigateToWeeklyAndBack() {
         with(composeTestRule) {
             onNodeWithTag(HomeTestTags.FAB.tag).performClick()
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("123")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
 
             onNodeWithTag(HomeTestTags.WEEKLY_BTN.tag).performClick()
             onNodeWithTag(WeeklyTestTags.TOP_APP_BAR.tag).assertIsDisplayed()
-
+            onNodeWithTag(WeeklyTestTags.TOP_APP_BAR_TITLE.tag).assertTextEquals(this, R.string.weekly_appbar_title)
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-
-            onNodeWithTag(HomeTestTags.TITLE.tag).assertTextEquals(this, R.string.app_name)
             onNodeWithTag(HomeTestTags.WEEKLY_BTN.tag).assertIsDisplayed()
         }
     }
@@ -55,14 +73,12 @@ internal class HomeScreenTest : BaseTest() {
                 this,
                 R.string.habit_dialog_create_habit_title
             )
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("123")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
-            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1").performClick()
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("123").performClick()
             onNodeWithTag(DetailTestTags.TOP_APP_BAR.tag).assertExists()
 
             activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-
-            onNodeWithTag(HomeTestTags.TITLE.tag).assertTextEquals(this, R.string.app_name)
         }
     }
 
@@ -78,12 +94,12 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("123")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsEnabled().performClick()
-            waitUntilAtLeastOneExists(hasText("1"), 5000)
-            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
+            waitUntilAtLeastOneExists(hasText("123"), 5000)
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("123")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
-            waitUntilAtLeastOneExists(hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag),5000)
+            waitUntilAtLeastOneExists(hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag), 5000)
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
                 this,
@@ -99,16 +115,16 @@ internal class HomeScreenTest : BaseTest() {
             )
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("1").performTextInput("1")
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("123").performTextInput("4")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("4123")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextReplacement("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextReplacement("00")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).assertIsNotEnabled()
             onNodeWithTag(DialogTestTags.BTN_CANCEL.tag).assertIsEnabled()
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
-            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("11")
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("001")
         }
     }
 
@@ -121,10 +137,10 @@ internal class HomeScreenTest : BaseTest() {
                 this,
                 R.string.habit_dialog_create_habit_title
             )
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).performTextInput("111")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
-            waitUntilAtLeastOneExists(hasText("1"), 10000)
-            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("1")
+            waitUntilAtLeastOneExists(hasText("111"), 10000)
+            onNodeWithTag(HomeTestTags.LIST_ITEM.tag).assertTextEquals("111")
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
@@ -204,7 +220,10 @@ internal class HomeScreenTest : BaseTest() {
 
             //editing #1
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
-            composeTestRule.waitUntilAtLeastOneExists(hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag), 5000)
+            composeTestRule.waitUntilAtLeastOneExists(
+                hasTestTag(HomeTestTags.LIST_DROPDOWN_MENU.tag),
+                5000
+            )
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU.tag).assertIsDisplayed()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_DELETE_ITEM.tag).assertTextEquals(
                 this,
@@ -234,7 +253,8 @@ internal class HomeScreenTest : BaseTest() {
             onNodeWithTag(HomeTestTags.LIST_BTN_MENU.tag).performClick()
             composeTestRule.waitForIdle()
             onNodeWithTag(HomeTestTags.LIST_DROPDOWN_MENU_EDIT_ITEM.tag).performClick()
-            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11").performTextInput("1")
+            onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("11")
+                .performTextInput("1")
             onNodeWithTag(DialogTestTags.TEXT_FIELD.tag).assertTextEquals("111")
             onNodeWithTag(DialogTestTags.BTN_SAVE.tag).performClick()
             waitUntilAtLeastOneExists(hasText("111"), 5000)

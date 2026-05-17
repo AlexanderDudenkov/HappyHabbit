@@ -2,6 +2,8 @@ package com.dudencov.happyhabit.presentation.notification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dudencov.happyhabit.data.notifications.BatteryOptimizationHelper
+import com.dudencov.happyhabit.data.notifications.NotificationDebugHelper
 import com.dudencov.happyhabit.domain.data.NotificationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,6 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
     private val repository: NotificationsRepository,
+    private val batteryOptimizationHelper: BatteryOptimizationHelper,
+    private val debugHelper: NotificationDebugHelper,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(NotificationState())
@@ -35,10 +39,26 @@ class NotificationViewModel @Inject constructor(
 
                 NotificationIntent.OnCreate -> {
                     loadData()
+                    checkPermissions()
+                    debugHelper.logSystemStatus()
+                }
+
+                NotificationIntent.OnResume -> {
+                    checkPermissions()
                 }
 
                 is NotificationIntent.OnSetReminderTime -> {
                     setReminderTime(intent.habitId, intent.time)
+                }
+
+                NotificationIntent.OnRequestBatteryOptimization -> {
+                    val intent = batteryOptimizationHelper.createBatterySettingsIntent()
+                    _sideEffect.emit(NotificationSideEffect.OpenSystemSettings(intent))
+                }
+
+                NotificationIntent.OnRequestExactAlarmPermission -> {
+                    val intent = batteryOptimizationHelper.createExactAlarmPermissionIntent()
+                    _sideEffect.emit(NotificationSideEffect.OpenSystemSettings(intent))
                 }
 
                 is NotificationIntent.OnSwitchItem -> {
@@ -82,6 +102,20 @@ class NotificationViewModel @Inject constructor(
 
         _state.update {
             it.copy(items = reminders)
+        }
+    }
+
+    private fun checkPermissions() {
+        val canScheduleExact = batteryOptimizationHelper.canScheduleExactAlarms()
+        val isIgnoringBattery = batteryOptimizationHelper.isIgnoringBatteryOptimizations()
+        val recommendations = debugHelper.getRecommendations()
+
+        _state.update {
+            it.copy(
+                canScheduleExactAlarms = canScheduleExact,
+                isIgnoringBatteryOptimizations = isIgnoringBattery,
+                recommendations = recommendations
+            )
         }
     }
 

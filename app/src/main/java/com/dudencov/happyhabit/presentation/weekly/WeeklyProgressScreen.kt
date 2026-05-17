@@ -29,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -62,8 +61,6 @@ private fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onIntent: (WeeklyProgressIntent) -> Unit
 ) {
-    val context = LocalContext.current
-
     Surface(
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
@@ -72,7 +69,12 @@ private fun TopBar(
         TopAppBar(
             modifier = Modifier.testTag(WeeklyTestTags.TOP_APP_BAR.tag),
             scrollBehavior = scrollBehavior,
-            title = { Text(text = context.getString(R.string.weekly_appbar_title)) },
+            title = {
+                Text(
+                    modifier = Modifier.testTag(WeeklyTestTags.TOP_APP_BAR_TITLE.tag),
+                    text = stringResource(R.string.weekly_appbar_title)
+                )
+            },
             navigationIcon = {
                 IconButton(onClick = { onIntent(WeeklyProgressIntent.OnNavigateBack) }) {
                     Icon(
@@ -128,7 +130,7 @@ private fun RowScope.HabitItemDays(habit: WeeklyHabitUi) {
     val weekdaysShort = stringArrayResource(R.array.weekdays_short)
 
     habit.days.forEachIndexed { i, day ->
-        Spacer(modifier = Modifier.Companion.weight(0.02f))
+        Spacer(modifier = Modifier.weight(0.02f))
         HabitItemDay(weekdaysShort[i], day)
     }
 }
@@ -140,7 +142,7 @@ private fun RowScope.HabitItemDay(
 ) {
     Text(
         text = dayName,
-        modifier = Modifier.Companion.align(Alignment.CenterVertically),
+        modifier = Modifier.align(Alignment.CenterVertically),
         color = if (day.isSelected) {
             MaterialTheme.colorScheme.primary
         } else {

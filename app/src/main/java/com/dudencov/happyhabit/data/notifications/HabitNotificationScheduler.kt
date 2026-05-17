@@ -24,7 +24,7 @@ const val HABIT_MINUTE_EXTRA = "habit_minute_extra"
 
 @Singleton
 class HabitNotificationScheduler @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
 
     private val alarmManager: AlarmManager by lazy {
@@ -46,21 +46,48 @@ class HabitNotificationScheduler @Inject constructor(
 
         if (todayReminderDateTime <= currentDateTime) {
             targetDate = today.plus(1, DateTimeUnit.DAY)
+            Log.d(
+                "HabitNotificationScheduler",
+                "Time $reminderTime has passed today, scheduling for tomorrow"
+            )
+        } else {
+            Log.d(
+                "HabitNotificationScheduler",
+                "Scheduling for today at $reminderTime"
+            )
         }
 
         val targetDateTime = LocalDateTime(date = targetDate, time = reminderTime)
         val triggerMillis = targetDateTime.toInstant(timeZone).toEpochMilliseconds()
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerMillis,
-            createPendingIntent(reminderTime = reminderTime, reminderId = reminderId)
-        )
+        try {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerMillis,
+                createPendingIntent(reminderTime = reminderTime, reminderId = reminderId)
+            )
 
-        Log.d(
-            "HabitNotificationScheduler",
-            "Next alarm scheduled for: $targetDateTime ($triggerMillis)"
-        )
+            Log.d(
+                "HabitNotificationScheduler",
+                "✓ Alarm scheduled successfully for reminderId=$reminderId at $targetDateTime (triggerMillis=$triggerMillis)"
+            )
+            Log.d(
+                "HabitNotificationScheduler",
+                "Current time: $currentDateTime, Target time: $targetDateTime"
+            )
+        } catch (e: SecurityException) {
+            Log.e(
+                "HabitNotificationScheduler",
+                "✗ SecurityException: Cannot schedule exact alarm. Check SCHEDULE_EXACT_ALARM permission",
+                e
+            )
+        } catch (e: Exception) {
+            Log.e(
+                "HabitNotificationScheduler",
+                "✗ Failed to schedule alarm for reminderId=$reminderId",
+                e
+            )
+        }
     }
 
     fun cancelNotification(reminderTime: LocalTime, reminderId: Int) {

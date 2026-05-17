@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -34,8 +34,14 @@ private fun HandleLifecycle(viewModel: NotificationViewModel) {
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.onIntent(NotificationIntent.OnCreate)
+            when (event) {
+                Lifecycle.Event.ON_CREATE -> {
+                    viewModel.onIntent(NotificationIntent.OnCreate)
+                }
+                Lifecycle.Event.ON_RESUME -> {
+                    viewModel.onIntent(NotificationIntent.OnResume)
+                }
+                else -> {}
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -59,6 +65,9 @@ private fun HandleSideEffects(
                 NotificationSideEffect.RouteBack -> navController.navigateUp()
                 is NotificationSideEffect.ShowToast -> {
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+                is NotificationSideEffect.OpenSystemSettings -> {
+                    context.startActivity(effect.intent)
                 }
             }
         }
